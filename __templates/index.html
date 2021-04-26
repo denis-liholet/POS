@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>POS</title>
+</head>
+<body>
+    <h1 style="color: dodgerblue"><b>Welcome to POS! (Pizza Order System)</b></h1>
+    {% if not session.logged_in %}
+            <h2>
+            <a href="login.html">Авторизация</a>
+            <p><a href="order.html">Заказать пиццу</a></p>
+            <p><a href="order_details.html">Статус заказа</a></p>
+            </h2>
+    {% else %}
+            <h2>
+            <a href="{{ url_for('logout') }}">Выйти из системы</a>
+            <p><a href="all_orders.html">Заказы</a></p>
+            <p><a href="pizza_list.html">Каталог</a></p>
+            <p><a href="add_new.html">Добавить пиццу</a></p>
+            </h2>
+    {% endif %}
+
+</body>
+</html>

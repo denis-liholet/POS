@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+</head>
+<body>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+        <form action="{{ url_for('login') }}" method="post">
+            <p>Логин: <input type="text" name="username"></p>
+            <p>Пароль: <input type="password" name="password"></p>
+            <input type="submit" value="OK">
+        </form>
+    <p><a href="index.html">Home page</a></p>
+</body>
+</html>

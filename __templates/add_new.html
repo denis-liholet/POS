@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить пиццу</title>
+</head>
+<body>
+    <h1><b>Pizzas:</b></h1>
+    {% for pizza in goods %}
+    <p><i><a href="{{ url_for('pizza_detail', pizza_id=pizza.pizza_id) }}">{{ pizza.name }}</a></i></p>
+    {% endfor %}
+
+    <form action="{{ url_for('add_new') }}" method="post">
+            <p>Название: <input type="text" name=name></p>
+            <p>Ингридиенты: <input type="text" name=description></p>
+            <p>Цена: <input type="text" name=price></p>
+            <p><input type=submit value=Добавить></p>
+    </form>
+    <p><a href="index.html">Home page</a></p>
+</body>
+</html>
