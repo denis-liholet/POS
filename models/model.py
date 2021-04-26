@@ -31,3 +31,11 @@ class Order(database.Model):
 
     def __repr__(self):
         return f'{self.order_id}, {self.details}, {self.total_amount}, {self.state}'
+
+
+class Credential(database.Model):
+    credential_id = database.Column(database.Integer, primary_key=True)
+    name = database.Column(database.String, unique=False, nullable=False)
+    last_name = database.Column(database.String, unique=False, nullable=False)
+    login = database.Column(database.String, unique=True, nullable=False)
+    password = database.Column(database.String, unique=False, nullable=False)

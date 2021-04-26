@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from models.model import database, Pizza
+from models.model import database, Pizza, Credential
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///static/goods.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///static/pos.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['USERNAME'] = 'owner'
 app.config['PASSWORD'] = 'owner'
