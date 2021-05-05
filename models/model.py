@@ -39,3 +39,6 @@ class Credential(database.Model):
     last_name = database.Column(database.String, unique=False, nullable=False)
     login = database.Column(database.String, unique=True, nullable=False)
     password = database.Column(database.String, unique=False, nullable=False)
+
+    def __repr__(self):
+        return f'{self.login}, {self.password}'

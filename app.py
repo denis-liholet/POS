@@ -1,24 +1,26 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from models.model import database, Pizza, Credential
+from models.model import database, Pizza, Ingredient
+from config import Configuration
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///static/pos.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['USERNAME'] = 'owner'
-app.config['PASSWORD'] = 'owner'
-app.config['SECRET_KEY'] = '123'
+app.config.from_object(Configuration)
 
 database.init_app(app)
 
 
+@app.route('/base')
+def base():
+    return render_template('base.html')
+
+
 @app.route('/')
-@app.route('/index.html')
+@app.route('/index')
 def index():
     goods = Pizza.query.all()
     return render_template('index.html', goods=goods)
 
 
-@app.route('/login.html', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
@@ -28,7 +30,7 @@ def login():
             error = 'Wrong password Try again'
         else:
             session['logged_in'] = True
-            return redirect(url_for('index'))
+            return redirect(url_for('staff'))
 
     return render_template('login.html', error=error)
 
@@ -39,23 +41,23 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/order.html')
+@app.route('/order')
 def order():
     goods = Pizza.query.all()
     return render_template('order.html', goods=goods)
 
 
-@app.route('/order_details.html')
+@app.route('/order_details')
 def order_details():
     return render_template('order_details.html')
 
 
-@app.route('/staff.html')
+@app.route('/staff')
 def staff():
     return render_template('staff.html')
 
 
-@app.route('/all_orders.html')
+@app.route('/all_orders')
 def all_orders():
     return render_template('all_orders.html')
 
@@ -66,13 +68,13 @@ def pizza_detail(pizza_id):
     return render_template('pizza_detail.html', pizza=pizza)
 
 
-@app.route('/pizza_list.html')
+@app.route('/pizza_list')
 def pizza_list():
     goods = Pizza.query.all()
     return render_template('pizza_list.html', goods=goods)
 
 
-@app.route('/add_new.html', methods=['GET', 'POST'])
+@app.route('/add_new', methods=['GET', 'POST'])
 def add_new():
     if not session.get('logged_in', False):
         return redirect(url_for('index'))
@@ -88,4 +90,10 @@ def add_new():
     database.session.add(pizza)
     database.session.commit()
 
-    return redirect(url_for('pizza_list'))
+    return redirect(url_for('staff'))
+
+
+@app.route('/ingredient_list')
+def ingredient_list():
+    goods = Ingredient.query.all()
+    return render_template('ingredient_list.html', goods=goods)

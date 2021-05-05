@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Каталог</title>
-</head>
-<body>
-<h1><b>Pizza`s list:</b></h1>
+{% extends 'base.html' %}
+
+{% block content_title %}
+    Каталог
+{% endblock %}
+
+{% block content %}
     {% for pizza in goods %}
-    <p><i><a href="{{ url_for('pizza_detail', pizza_id=pizza.pizza_id) }}">{{ pizza.name }}</a></i></p>
+    <p><a href="{{ url_for('pizza_detail', pizza_id=pizza.pizza_id) }}">{{ pizza.name }}</a></p>
     {% endfor %}
-    <p><a href="index.html">Home page</a></p>
-</body>
-</html>
+{% endblock %}

@@ -1,18 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Авторизация</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content_title %}
+    Введите ниже Ваш логин и пароль
+{% endblock %}
+
+{% block content %}
     {% if error %}
         <p>{{ error }}</p>
     {% endif %}
+
         <form action="{{ url_for('login') }}" method="post">
             <p>Логин: <input type="text" name="username"></p>
             <p>Пароль: <input type="password" name="password"></p>
-            <input type="submit" value="OK">
+            <input type="submit" value="Войти">
         </form>
-    <p><a href="index.html">Home page</a></p>
-</body>
-</html>
+{% endblock %}

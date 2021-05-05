@@ -1,20 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Информация</title>
-</head>
-<body>
-    <h2>
-        <b>Название --- {{ pizza.name }}</b>
-        <p style="color: orangered">Ингридиенты --- {{ pizza.description }}</p>
-        <p style="color: darkgreen">Цена --- {{ pizza.price }}</p>
-    </h2>
+{% extends 'base.html' %}
+
+{% block content_title %}
+    {{ pizza.name }}
+{% endblock %}
+
+{% block content %}
+
+    {{ pizza.description }}
+
+    <p><h5><b>{{ pizza.price }} грн.</b></h5></p>
+
+    <img src="{{ pizza.image }}" alt="шось пишло нэ так....">
+
+    <p></p>
 
     {% if not session.logged_in %}
                 <p><input type=submit value=Заказать!></p>
     {% endif %}
-
-    <p><a href="index.html">Home page</a></p>
-</body>
-</html>
+{% endblock %}

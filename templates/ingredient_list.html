@@ -1,0 +1,16 @@
+{% extends 'staff.html' %}
+
+{% block content_title %}
+    Добавки к пицце
+{% endblock %}
+
+{% block content %}
+    {% for ingredient in goods %}
+    <p>{{ ingredient.ingredient_type }} - {{ ingredient.ingredient_price }} грн.</p>
+    {% endfor %}
+
+{% endblock %}
+
+{% block additional_content %}
+
+{% endblock %}
