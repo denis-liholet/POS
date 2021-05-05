@@ -16,8 +16,7 @@ def base():
 @app.route('/')
 @app.route('/index')
 def index():
-    goods = Pizza.query.all()
-    return render_template('index.html', goods=goods)
+    return render_template('index.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -60,6 +59,11 @@ def staff():
 @app.route('/all_orders')
 def all_orders():
     return render_template('all_orders.html')
+
+
+@app.route('/all_orders_staff')
+def all_orders_staff():
+    return render_template('all_orders_staff.html')
 
 
 @app.route('/pizza_detail/<int:pizza_id>')
