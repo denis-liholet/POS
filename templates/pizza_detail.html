@@ -15,6 +15,12 @@
     <p></p>
 
     {% if not session.logged_in %}
-                <p><input type=submit value=Заказать!></p>
+        <h5><b>Вы можете дополнительно добавить:</b></h5>
+        <p></p>
+        {% for item in ingredient %}
+            <p><input type="checkbox" value="+{{ item.ingredient_price }} грн."> {{ item.type }} + {{ item.price }} грн.</p>
+        {% endfor %}
+
+        <p><input type=submit value=Заказать!></p>
     {% endif %}
 {% endblock %}

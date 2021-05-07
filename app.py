@@ -49,17 +49,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/order')
-def order():
-    goods = Pizza.query.all()
-    return render_template('order.html', goods=goods)
-
-
-@app.route('/order_details')
-def order_details():
-    return render_template('order_details.html')
-
-
 @app.route('/admin')
 def admin():
     return render_template('base_admin.html')
@@ -72,7 +61,7 @@ def staff():
 
 @app.route('/all_orders')
 def all_orders():
-    return render_template('all_orders.html')
+    return render_template('all_orders_user.html')
 
 
 @app.route('/all_orders_staff')
@@ -83,7 +72,8 @@ def all_orders_staff():
 @app.route('/pizza_detail/<int:pizza_id>')
 def pizza_detail(pizza_id):
     pizza = Pizza.query.filter_by(pizza_id=pizza_id).first_or_404()
-    return render_template('pizza_detail.html', pizza=pizza)
+    ingredient = Ingredient.query.all()
+    return render_template('pizza_detail.html', pizza=pizza, ingredient=ingredient)
 
 
 @app.route('/pizza_list')
@@ -92,26 +82,38 @@ def pizza_list():
     return render_template('pizza_list.html', goods=goods)
 
 
-@app.route('/add_new', methods=['GET', 'POST'])
+@app.route('/db_edit')
+def db_edit():
+    goods = Pizza.query.all()
+    return render_template('db_edit.html', goods=goods)
+
+
+@app.route('/db_edit', methods=['GET', 'POST'])
 def add_new():
-    if not session.get('logged_in', False):
-        return redirect(url_for('index'))
-    if request.method == 'GET':
-        return render_template('add_new.html')
-    elif request.method == 'POST':
+    if request.method == 'POST':
         pizza = Pizza(
             name=request.form['name'],
             description=request.form['description'],
-            price=round(float(request.form['price']), 2)
+            price=round(float(request.form['price']), 2),
+            image=request.form['image']
         )
+        database.session.add(pizza)
+        database.session.commit()
 
-    database.session.add(pizza)
-    database.session.commit()
+    return redirect(url_for('db_edit'))
 
-    return redirect(url_for('staff'))
+
+@app.route('/db_edit')
+def del_item():
+    pass
+
+
+@app.route('/update_item')
+def update_item():
+    return render_template('update_item.html')
 
 
 @app.route('/ingredient_list')
 def ingredient_list():
-    goods = Ingredient.query.all()
-    return render_template('ingredient_list.html', goods=goods)
+    ingredient = Ingredient.query.all()
+    return render_template('ingredient_list.html', ingredient=ingredient)

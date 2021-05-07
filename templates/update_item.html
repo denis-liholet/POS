@@ -1,15 +1,19 @@
 {% extends 'base_admin.html' %}
-
 {% block content_title %}
-    Добавки к пицце
+    Редактор БД
 {% endblock %}
 
 {% block content %}
-    {% for item in ingredient %}
-    <p>{{ item.type }} - {{ item.price }} грн.</p>
-    {% endfor %}
+
+    <p><h5><b>Изменяем:</b></h5></p>
+
+
 
 {% endblock %}
+
+
+
+
 
 {% block additional_content %}
 

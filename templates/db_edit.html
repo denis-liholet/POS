@@ -1,0 +1,40 @@
+{% extends 'base_admin.html' %}
+
+{% block content_title %}
+    Редактор БД
+{% endblock %}
+
+{% block content %}
+    <form action="{{ url_for('add_new') }}" method="post">
+            <p>Название: <input type="text" name=name></p>
+            <p>Ингридиенты: <input type="text" name=description></p>
+            <p>Цена: <input type="text" name=price></p>
+            <p>Фото: <input type="text" name=image></p>
+            <p><input type=submit value=Добавить></p>
+    </form>
+    <p><h5><b>Каталог:</b></h5></p>
+    <p>--------------------------</p>
+    {% for pizza in goods %}
+
+        <p><b>{{ pizza.name }}</b></p>
+            {{ pizza.description }}
+            <p><b>{{ pizza.price }} грн.</b></p>
+        <form action="{{ url_for('update_item') }}">
+            <input type=submit value=Изменить name="upd">
+        </form>
+        <p></p>
+        <form action="{{ url_for('del_item') }}">
+            <input type=submit value=Удалить name="del">
+        </form>
+            <p>--------------------------</p>
+
+
+
+
+    {% endfor %}
+
+{% endblock %}
+
+{% block additional_content %}
+
+{% endblock %}

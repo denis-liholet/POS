@@ -8,7 +8,7 @@ class Pizza(database.Model):
     name = database.Column(database.String(100), unique=True, nullable=False)
     description = database.Column(database.String(100), unique=False, nullable=False)
     price = database.Column(database.Numeric(scale=2), nullable=False)
-    image = database.Column(database.String(100), unique=True, nullable=True)
+    image = database.Column(database.String(100))
 
     def __repr__(self):
         return f'{self.name}, {self.price}'
@@ -16,11 +16,11 @@ class Pizza(database.Model):
 
 class Ingredient(database.Model):
     ingredient_id = database.Column(database.Integer, primary_key=True)
-    ingredient_type = database.Column(database.String(100), unique=True, nullable=False)
-    ingredient_price = database.Column(database.Numeric(scale=2), nullable=False)
+    type = database.Column(database.String(100), unique=True, nullable=False)
+    price = database.Column(database.Numeric(scale=2), nullable=False)
 
     def __repr__(self):
-        return f'{self.ingredient_type}, {self.ingredient_price}'
+        return f'{self.type}, {self.price}'
 
 
 class Order(database.Model):
@@ -39,7 +39,7 @@ class Credential(database.Model):
     last_name = database.Column(database.String, unique=False, nullable=False)
     login = database.Column(database.String, unique=True, nullable=False)
     password = database.Column(database.String, unique=False, nullable=False)
-    role = database.Column(database.Boolean)
+    role = database.Column(database.Boolean, default=False)
 
     def __repr__(self):
         return f'{self.name, self.last_name, self.role}'
