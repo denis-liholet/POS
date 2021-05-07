@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-from models.model import database, Pizza, Ingredient
+from flask import Flask, render_template, request, session, redirect, url_for
+from models.model import database, Pizza, Ingredient, Credential
 from config import Configuration
 
 app = Flask(__name__)
@@ -10,7 +10,7 @@ database.init_app(app)
 
 @app.route('/base')
 def base():
-    return render_template('base.html')
+    return render_template('base_user.html')
 
 
 @app.route('/')
@@ -23,15 +23,24 @@ def index():
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != app.config['USERNAME']:
-            error = 'Wrong username! Try again'
-        elif request.form['password'] != app.config['PASSWORD']:
-            error = 'Wrong password Try again'
+        user_name = request.form['username']
+        user_password = request.form['password']
+        data = Credential.query.filter_by(login=user_name).first()
+        if data is not None and data.password == user_password:
+            if data.role:
+                session['logged_in'] = True
+                return redirect(url_for('admin'))
+            else:
+                session['logged_in'] = False
+                return redirect(url_for('staff'))
         else:
-            session['logged_in'] = True
-            return redirect(url_for('staff'))
-
+            error = 'Wrong username or password!'
     return render_template('login.html', error=error)
+
+
+@app.route('/all_orders_admin')
+def all_orders_admin():
+    return render_template('all_orders_admin.html')
 
 
 @app.route('/logout')
@@ -51,9 +60,14 @@ def order_details():
     return render_template('order_details.html')
 
 
+@app.route('/admin')
+def admin():
+    return render_template('base_admin.html')
+
+
 @app.route('/staff')
 def staff():
-    return render_template('staff.html')
+    return render_template('base_staff.html')
 
 
 @app.route('/all_orders')
