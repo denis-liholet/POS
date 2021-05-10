@@ -7,7 +7,9 @@
 
     <p><h5><b>Изменяем:</b></h5></p>
 
-
+    <p><b>{{ pizza.name }}</b></p>
+          {{ pizza.description }}
+    <p><h5><b>{{ pizza.price }} грн.</b></h5></p>
 
 {% endblock %}
 
@@ -16,5 +18,14 @@
 
 
 {% block additional_content %}
+
+    <form action="{{ url_for('update_item', pizza_id=pizza.pizza_id) }}" method="post">
+            <p>Название: <input type="text" name=name></p>
+            <p>Ингридиенты: <input type="text" name=description></p>
+            <p>Цена: <input type="text" name=price></p>
+            <p>Фото: <input type="text" name=image></p>
+            <p><input type=submit value=Изменить></p>
+    </form>
+
 
 {% endblock %}

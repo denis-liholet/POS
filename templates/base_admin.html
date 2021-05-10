@@ -16,15 +16,17 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{url_for('all_orders_admin')}}">Список заказов</a>
-        </li>
-          <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{url_for('db_edit')}}">Редактор БД</a>
+          <a class="nav-link" aria-current="page" href="{{url_for('all_orders_admin')}}">Список заказов</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('ingredient_list') }}">Добавки</a>
         </li>
-
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="{{url_for('db_edit')}}">Редактор БД</a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('user_list') }}">Пользователи</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('logout') }}">Выйти из системы</a>
         </li>

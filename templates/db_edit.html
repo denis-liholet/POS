@@ -19,12 +19,14 @@
         <p><b>{{ pizza.name }}</b></p>
             {{ pizza.description }}
             <p><b>{{ pizza.price }} грн.</b></p>
-        <form action="{{ url_for('update_item') }}">
-            <input type=submit value=Изменить name="upd">
+        <form action="{{ url_for('update_item', pizza_id=pizza.pizza_id) }}">
+            <input type="hidden" name=pizza_id value="{{ pizza.pizza_id }}">
+            <input type=submit value=Изменить>
         </form>
         <p></p>
-        <form action="{{ url_for('del_item') }}">
-            <input type=submit value=Удалить name="del">
+        <form action="{{ url_for('del_item') }}" method="post">
+            <input type="hidden" name=pizza_id value="{{ pizza.pizza_id }}">
+            <input type=submit value=Удалить>
         </form>
             <p>--------------------------</p>
 
