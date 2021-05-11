@@ -1,0 +1,17 @@
+{% extends 'base_user.html' %}
+
+{% block content_title %}
+    Ваш заказ:
+{% endblock %}
+
+{% block content %}
+    <p><b>Номер заказа: {{ order.order_id }}</b></p>
+    <p><b>Пицца: </b>{{ pizza.name }}</p>
+    <p><b>Цена: </b>{{ pizza.price }}</p>
+    <p><b>Добавки: </b>{{ order.ingredient }}</p>
+
+
+    <p><b>Общая стоимость: {{ order.total_amount }} грн.</b></p>
+
+
+{% endblock %}

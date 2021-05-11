@@ -14,13 +14,15 @@
 
     <p></p>
 
-    {% if not session.logged_in %}
+
         <h5><b>Вы можете дополнительно добавить:</b></h5>
         <p></p>
-        {% for item in ingredient %}
-            <p><input type="checkbox" value="+{{ item.ingredient_price }} грн."> {{ item.type }} + {{ item.price }} грн.</p>
-        {% endfor %}
 
-        <p><input type=submit value=Заказать!></p>
-    {% endif %}
+        <form action="{{ url_for('add_order', pizza_id=pizza.pizza_id) }}" method="post">
+            {% for item in ingredient %}
+            <p><input type="checkbox" name="{{ item.type }}" value="{{ item.price }}"> {{ item.type }} + {{ item.price }} грн.</p>
+        {% endfor %}
+            <p><input type=submit value="Заказать!"></p>
+        </form>
+
 {% endblock %}

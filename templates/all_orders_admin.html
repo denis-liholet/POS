@@ -1,11 +1,18 @@
 {% extends 'base_admin.html' %}
 
 {% block content_title %}
-    ... under construction) ...
+    Список заказов:
 {% endblock %}
 
 {% block content %}
-
+    {% for order in orders %}
+        {% if order.state %}
+            <p>Номер заказа: <b>{{ order.order_id }}</b> -> ГОТОВА</p>
+        {% else %}
+            <p>Номер заказа: <b>{{ order.order_id }}</b> -> ВЫПЕКАЕМ</p>
+        <p>-----------------------------------</p>
+        {% endif %}
+    {% endfor %}
 
 
 {% endblock %}

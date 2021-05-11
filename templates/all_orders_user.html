@@ -5,5 +5,12 @@
 {% endblock %}
 
 {% block content %}
-    ... maybe later ...
+    {% for order in orders %}
+        {% if order.state %}
+            <p>Номер заказа: <b>{{ order.order_id }}</b> -> ГОТОВ</p>
+        {% else %}
+            <p>Номер заказа: <b>{{ order.order_id }}</b> -> ВЫПЕКАЕМ</p>
+        <p>-----------------------------------</p>
+        {% endif %}
+    {% endfor %}
 {% endblock %}

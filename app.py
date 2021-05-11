@@ -1,5 +1,7 @@
-from flask import Flask, render_template, request, session, redirect, url_for
-from models.model import database, Pizza, Ingredient, Credential
+from flask_login import login_required
+
+from flask import Flask, render_template, request, session, redirect, url_for, g
+from models.model import database, Pizza, Ingredient, Credential, Order
 from config import Configuration
 import hashlib
 
@@ -24,6 +26,7 @@ def base():
 
 @app.route('/')
 @app.route('/index')
+# @login_required
 def index():
     return render_template('index.html')
 
@@ -40,16 +43,12 @@ def login():
                 session['logged_in'] = True
                 return redirect(url_for('admin'))
             else:
-                session['logged_in'] = False
+                print(data.name)
+                session.add = data.name
                 return redirect(url_for('staff'))
         else:
             error = 'Wrong username or password!'
     return render_template('login.html', error=error)
-
-
-@app.route('/all_orders_admin')
-def all_orders_admin():
-    return render_template('all_orders_admin.html')
 
 
 @app.route('/logout')
@@ -70,12 +69,20 @@ def staff():
 
 @app.route('/all_orders')
 def all_orders():
-    return render_template('all_orders_user.html')
+    orders = Order.query.all()
+    return render_template('all_orders_user.html', orders=orders)
 
 
 @app.route('/all_orders_staff')
 def all_orders_staff():
-    return render_template('all_orders_staff.html')
+    orders = Order.query.join(Pizza).add_column(Pizza.name)
+    return render_template('all_orders_staff.html', orders=orders)
+
+
+@app.route('/all_orders_admin')
+def all_orders_admin():
+    orders = Order.query.all()
+    return render_template('all_orders_admin.html', orders=orders)
 
 
 @app.route('/pizza_detail/<int:pizza_id>')
@@ -159,6 +166,7 @@ def ingredient_list():
     return render_template('ingredient_list.html', ingredient=ingredient)
 
 
+
 @app.route('/user_list')
 def user_list():
     users = Credential.query.all()
@@ -190,6 +198,41 @@ def add_user():
         database.session.commit()
 
     return redirect(url_for('user_list'))
+
+
+@app.route('/add_order/<int:pizza_id>', methods=('GET', 'POST'))
+def add_order(pizza_id):
+    pizza = Pizza.query.filter_by(pizza_id=pizza_id).first()
+    content = request.values
+    ing_list = []
+    ing_price = 0
+    for item in content:
+        ing_list.append(item)
+        ingredient = Ingredient.query.filter_by(type=item).first()
+        ing_price += ingredient.price
+    ingredient = ', '.join(ing_list)
+
+    if request.method == 'POST':
+        order = Order(
+            order_pizza=pizza_id,
+            ingredient=ingredient,
+            total_amount=pizza.price + ing_price
+        )
+        database.session.add(order)
+        database.session.commit()
+
+        return render_template('order_info.html', pizza=pizza, order=order)
+
+
+@app.route('/done/<int:order_id>', methods=('POST', 'GET'))
+def done(order_id):
+    order = Order.query.filter_by(order_id=order_id).first_or_404()
+
+    if request.method == 'POST':
+        order.state = True
+        print(session)
+        database.session.commit()
+        return redirect(url_for('all_orders_staff'))
 
 
 if __name__ == '__main__':

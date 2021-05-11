@@ -8,6 +8,7 @@ class Pizza(database.Model):
     name = database.Column(database.String(100), unique=True, nullable=False)
     description = database.Column(database.String(100), unique=False, nullable=False)
     price = database.Column(database.Numeric(scale=2), nullable=False)
+    orders = database.relationship('Order', backref='pizza')
     image = database.Column(database.String(100))
 
     def __repr__(self):
@@ -25,12 +26,14 @@ class Ingredient(database.Model):
 
 class Order(database.Model):
     order_id = database.Column(database.Integer, primary_key=True)
-    details = database.Column(database.String(300), nullable=False)
-    total_amount = database.Column(database.Numeric(scale=2), nullable=False)
+    order_pizza = database.Column(database.Integer, database.ForeignKey('pizza.pizza_id'), nullable=False)
+    ingredient = database.Column(database.String(300), nullable=True)
+    total_amount = database.Column(database.Numeric(scale=2), nullable=True)
+    order_credential = database.Column(database.Integer, database.ForeignKey('credential.credential_id'), nullable=True)
     state = database.Column(database.BOOLEAN, default=False)
 
     def __repr__(self):
-        return f'{self.order_id}, {self.details}, {self.total_amount}, {self.state}'
+        return f'{self.order_id}, {self.order_pizza}, {self.ingredient}, {self.total_amount}, {self.state}'
 
 
 class Credential(database.Model):
@@ -40,6 +43,7 @@ class Credential(database.Model):
     login = database.Column(database.String, unique=True, nullable=False)
     password = database.Column(database.String, unique=False, nullable=False)
     role = database.Column(database.Boolean, default=False)
+    orders = database.relationship('Order', backref='credential')
 
     def __repr__(self):
         return f'{self.name, self.last_name, self.role}'
