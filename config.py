@@ -1,7 +1,5 @@
-
-
 class Configuration:
-    DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///static/pos.db'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///resources/pos.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = '111'
+    SECRET_KEY = 'some secret salt)'
+    DEBUG = True
