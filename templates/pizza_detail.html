@@ -8,22 +8,22 @@
 
     {{ pizza.description }}
 
-    <p><h5><b>{{ pizza.price }} грн.</b></h5></p>
+    <p><h5><b>{{ pizza.price }} hrn.</b></h5></p>
 
-    <img src="{{ pizza.image }}" alt="шось пишло нэ так....">
+    <img src="{{ pizza.image }}" alt="something went wrong :(">
 
     <p></p>
 
 
-    <h5><b>Вы можете дополнительно добавить:</b></h5>
+    <h5><b>You can add:</b></h5>
     <p></p>
 
-    <form action="{{ url_for('add_order', pizza_id=pizza.pizza_id) }}" method="post">
+    <form action="{{ url_for('add_order', pizza_id=pizza.id) }}" method="post">
         {% for item in ingredient %}
             <p><input type="checkbox" name="{{ item.type }}" value="{{ item.price }}"> {{ item.type }}
-                + {{ item.price }} грн.</p>
+                + {{ item.price }} hrn.</p>
         {% endfor %}
-        <p><input type=submit value="Заказать!"></p>
+        <p><input type=submit value="Get it!"></p>
     </form>
 
 {% endblock %}

@@ -1,17 +1,42 @@
 {% extends 'base_user.html' %}
 
 {% block content_title %}
-    Введите ниже Ваш логин и пароль
+
 {% endblock %}
 
-{% block content %}
-    {% if error %}
-        <p>{{ error }}</p>
-    {% endif %}
 
-        <form action="{{ url_for('login') }}" method="post">
-            <p>Логин: <input type="text" name="username"></p>
-            <p>Пароль: <input type="password" name="password"></p>
-            <input type="submit" value="Войти">
-        </form>
+{% block content %}
+    <b>Please enter your login and password</b>
+    <p></p>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <form method="POST">
+        <table>
+            <tr>
+                <td>Login</td>
+                <td><input type="text" name="login"></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" name="password"></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Login"></td>
+            </tr>
+        </table>
+    </form>
+
+    {#    <form action="{{ url_for('login') }}" method="post">#}
+    {#        <p>Логин: <input type="text" name="username"></p>#}
+    {#        <p>Пароль: <input type="password" name="password"></p>#}
+    {#        <input type="submit" value="Войти">#}
+    {#    </form>#}
+
 {% endblock %}

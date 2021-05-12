@@ -1,1 +1,1 @@
-__all__ = ['db_init', 'model', ]
+__all__ = ['model']

@@ -1,0 +1,54 @@
+{% extends 'base_user.html' %}
+
+{% block content_title %}
+    Sign up
+{% endblock %}
+
+{% block content %}
+    <p></p>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <form method="POST">
+        <table>
+            <tr>
+                <td>Login</td>
+                <td><input type="text" name="login"></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" name="password"></td>
+            </tr>
+            <tr>
+                <td>Password retype</td>
+                <td><input type="password" name="password2"></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" name="name"></td>
+            </tr>
+            <tr>
+                <td>Last name</td>
+                <td><input type="text" name="last_name"></td>
+            </tr>
+            <tr>
+                <td>Who you want to be?</td>
+
+                <td><input type="radio" name="role" required value="false"> Chef</td>
+
+                <td><input type="radio" name="role" required value="true"> Admin</td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Sign up!"></td>
+            </tr>
+
+        </table>
+
+    </form>
+{% endblock %}

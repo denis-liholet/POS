@@ -1,20 +1,20 @@
 {% extends 'base_staff.html' %}
 
 {% block content_title %}
-    Список заказов:
+    Order list:
 {% endblock %}
 
 {% block content %}
     {% for order, pizza in orders %}
 
-        <p>Номер заказа: <b>{{ order.order_id }}</b></p>
-        <p>Пицца: <b>{{ order.pizza.name }}</b></p>
-        <p>Добавки: <b>{{ order.ingredient }}</b></p>
+        <p>Order # <b>{{ order.id }}</b></p>
+        <p>Pizza: <b>{{ order.pizza.name }}</b></p>
+        <p>Additions: <b>{{ order.ingredient }}</b></p>
 
         {% if not order.state %}
 
-            <form action="{{ url_for('done', order_id=order.order_id) }}" method="post">
-            <p><input type=submit value=Готов></p>
+            <form action="{{ url_for('done', order_id=order.id) }}" method="post">
+            <p><input type=submit value=Done></p>
         {% endif %}
     </form>
 

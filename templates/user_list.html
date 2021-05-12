@@ -1,39 +1,24 @@
 {% extends 'base_admin.html' %}
 
 {% block content_title %}
-    <b>Пользователи:</b>
+    <b>Users:</b>
 {% endblock %}
 
 {% block content %}
-    <form action="{{ url_for('add_user') }}" method="post">
-            <p>Имя: <input type="text" name=name></p>
-            <p>Фамилия: <input type="text" name=last_name></p>
-            <p>Логин: <input type="text" name=login></p>
-            <p>Пароль: <input type="text" name=password></p>
-            Роль:
-            <input type="radio" name=role value="false"> Повар
-            <input type="radio" name=role value="true"> Администратор
-            <p></p>
-            <p><input type=submit value=Добавить></p>
-            --------------------------------------------
-    </form>
-{% endblock %}
-
-{% block additional_content %}
     {% for user in users %}
-            {% if user.role == 1 %}
-                <p><b>{{ user.name }} {{ user.last_name }}</b> --- Administrator </p>
-                <p><b>login:</b> {{ user.login }}</p>
-            {% endif %}
-            {% if user.role == 0 %}
-                <p><b>{{ user.name }} {{ user.last_name }}</b> --- Staff</p>
-                <p><b>login:</b> {{ user.login }}</p>
-            {% endif %}
-            <p></p>
+        {% if user.role == 1 %}
+            <p><b>{{ user.name }} {{ user.last_name }}</b> --- Administrator </p>
+            <p><b>login:</b> {{ user.login }}</p>
+        {% endif %}
+        {% if user.role == 0 %}
+            <p><b>{{ user.name }} {{ user.last_name }}</b> --- Chef</p>
+            <p><b>login:</b> {{ user.login }}</p>
+        {% endif %}
+        <p></p>
         <form action="{{ url_for('del_user') }}" method="post">
-            <input type="hidden" name=credential_id value="{{ user.credential_id }}">
-            <input type=submit value=Удалить>
+            <input type="hidden" name=id value="{{ user.id }}">
+            <input type=submit value=Delete>
         </form>
-            --------------------------------------------
+        --------------------------------------------
     {% endfor %}
 {% endblock %}

@@ -1,12 +1,12 @@
 {% extends 'base_admin.html' %}
 
 {% block content_title %}
-    Добавки к пицце
+    Additions
 {% endblock %}
 
 {% block content %}
     {% for item in ingredient %}
-    <p>{{ item.type }} - {{ item.price }} грн.</p>
+    <p>{{ item.type }} - {{ item.price }} hrn.</p>
     {% endfor %}
 
 {% endblock %}

@@ -1,9 +1,12 @@
 {% extends 'base_user.html' %}
 
 {% block content_title %}
-    Добро пожаловать!
+    <h4>Welcome to <b>P</b>izza <b>O</b>rder <b>S</b>ystem!</h4>
 {% endblock %}
 
 {% block content %}
-    Выберите "Заказать пиццу" или войдите в систему ("Авторизация")
+    <p># If you are just hungry - choose <a href="{{ url_for('pizza_list') }}"><b>"Order a pizza"</b></a></p>
+    <p># If you want to join the team - choose <a href="{{ url_for('sign_up') }}"><b>"Sign up"</b></a></p>
+    <p># If you are an employee - choose <a href="{{ url_for('login') }}"><b>"Log in"</b></a></p>
 {% endblock %}
+

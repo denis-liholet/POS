@@ -1,15 +1,15 @@
 {% extends 'base_admin.html' %}
 {% block content_title %}
-    Редактор БД
+    DB Editor
 {% endblock %}
 
 {% block content %}
 
-    <p><h5><b>Изменяем:</b></h5></p>
+    <p><h5><b>Update:</b></h5></p>
 
     <p><b>{{ pizza.name }}</b></p>
           {{ pizza.description }}
-    <p><h5><b>{{ pizza.price }} грн.</b></h5></p>
+    <p><h5><b>{{ pizza.price }} hrn.</b></h5></p>
 
 {% endblock %}
 
@@ -19,12 +19,12 @@
 
 {% block additional_content %}
 
-    <form action="{{ url_for('update_item', pizza_id=pizza.pizza_id) }}" method="post">
-            <p>Название: <input type="text" name=name></p>
-            <p>Ингридиенты: <input type="text" name=description></p>
-            <p>Цена: <input type="text" name=price></p>
-            <p>Фото: <input type="text" name=image></p>
-            <p><input type=submit value=Изменить></p>
+    <form action="{{ url_for('update_item', pizza_id=pizza.id) }}" method="post">
+            <p>Label: <input type="text" name=name></p>
+            <p>Description: <input type="text" name=description></p>
+            <p>Price: <input type="text" name=price></p>
+            <p>Link to image: <input type="text" name=image></p>
+            <p><input type=submit value=Update></p>
     </form>
 
 

@@ -1,22 +1,17 @@
 {% extends 'base_admin.html' %}
 
 {% block content_title %}
-    Список заказов:
+    Order list:
 {% endblock %}
 
 {% block content %}
     {% for order in orders %}
         {% if order.state %}
-            <p>Номер заказа: <b>{{ order.order_id }}</b> -> ГОТОВА</p>
+            <p>Order # <b>{{ order.id }}</b> -> <span style="color: green; "><b>READY</b></span></p>
         {% else %}
-            <p>Номер заказа: <b>{{ order.order_id }}</b> -> ВЫПЕКАЕМ</p>
-            <p>-----------------------------------</p>
+            <p>Order # <b>{{ order.id }}</b> -> <span style="color: coral; "><b>BAKING</b></span></p>
         {% endif %}
     {% endfor %}
 
-
-{% endblock %}
-
-{% block additional_content %}
 
 {% endblock %}

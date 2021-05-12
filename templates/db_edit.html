@@ -1,32 +1,32 @@
 {% extends 'base_admin.html' %}
 
 {% block content_title %}
-    Редактор БД
+    DB Editor
 {% endblock %}
 
 {% block content %}
     <form action="{{ url_for('add_new') }}" method="post">
-            <p>Название: <input type="text" name=name></p>
-            <p>Ингридиенты: <input type="text" name=description></p>
-            <p>Цена: <input type="text" name=price></p>
-            <p>Фото: <input type="text" name=image></p>
-            <p><input type=submit value=Добавить></p>
+            <p>Label: <input type="text" name=name></p>
+            <p>Description: <input type="text" name=description></p>
+            <p>Price: <input type="text" name=price></p>
+            <p>Link to image: <input type="text" name=image></p>
+            <p><input type=submit value=Add></p>
     </form>
-    <p><h5><b>Каталог:</b></h5></p>
+    <p><h5><b>Catalog:</b></h5></p>
     <p>--------------------------</p>
     {% for pizza in goods %}
 
         <p><b>{{ pizza.name }}</b></p>
             {{ pizza.description }}
-            <p><b>{{ pizza.price }} грн.</b></p>
-        <form action="{{ url_for('update_item', pizza_id=pizza.pizza_id) }}">
-            <input type="hidden" name=pizza_id value="{{ pizza.pizza_id }}">
-            <input type=submit value=Изменить>
+            <p><b>{{ pizza.price }} hrn.</b></p>
+        <form action="{{ url_for('update_item', pizza_id=pizza.id) }}">
+            <input type="hidden" name=pizza_id value="{{ pizza.id }}">
+            <input type=submit value=Update>
         </form>
         <p></p>
         <form action="{{ url_for('del_item') }}" method="post">
-            <input type="hidden" name=pizza_id value="{{ pizza.pizza_id }}">
-            <input type=submit value=Удалить>
+            <input type="hidden" name=id value="{{ pizza.id }}">
+            <input type=submit value=Delete>
         </form>
             <p>--------------------------</p>
 

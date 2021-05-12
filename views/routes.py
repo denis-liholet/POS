@@ -1,6 +1,7 @@
-import hashlib
-
-from flask import render_template, request, session, redirect, url_for
+import flask_login
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import login_user, logout_user, login_required
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import app
 from models.model import database, Pizza, Ingredient, User, Order
@@ -9,8 +10,11 @@ from models.model import database, Pizza, Ingredient, User, Order
 # -------------------------------- USER PART -----------------------------------------
 
 
-def crypto(phrase):
-    return hashlib.md5(phrase.encode()).hexdigest()
+@app.after_request
+def redirect_to_signin(response):
+    if response.status_code == 401:
+        return redirect(url_for('login'))
+    return response
 
 
 @app.route('/base')
@@ -20,34 +24,62 @@ def base():
 
 @app.route('/')
 @app.route('/index')
-# @login_required
 def index():
     return render_template('index.html')
 
 
+@app.route('/sign_up', methods=['GET', 'POST'])
+def sign_up():
+    act_login = request.form.get('login')
+    act_password = request.form.get('password')
+    act_password2 = request.form.get('password2')
+    name = request.form.get('name')
+    last_name = request.form.get('last_name')
+    role = True if request.form.get('role') == 'true' else False
+
+    if request.method == 'POST':
+        if not (act_login or act_password or act_password2):
+            flash('Please fill all fields!')
+        elif act_password != act_password2:
+            flash('Passwords are not equal!')
+        else:
+            hash_pwd = generate_password_hash(act_password)
+            new_user = User(
+                login=act_login,
+                password=hash_pwd,
+                name=name,
+                last_name=last_name,
+                role=role
+            )
+            database.session.add(new_user)
+            database.session.commit()
+            return redirect(url_for('login'))
+    return render_template('sign_up.html')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    error = None
-    if request.method == 'POST':
-        user_name = request.form['username']
-        user_password = request.form['password']
-        data = User.query.filter_by(login=user_name).first()
-        if data is not None and data.password == crypto(user_password):
-            if data.role:
-                session['logged_in'] = True
+    act_login = request.form.get('login')
+    act_password = request.form.get('password')
+
+    if act_login and act_password:
+        user = User.query.filter_by(login=act_login).first()
+
+        if user and check_password_hash(user.password, act_password):
+            login_user(user.name)
+            user_role = User.query.filter_by(login=act_login).first().role
+            if user_role:
                 return redirect(url_for('admin'))
-            else:
-                print(data.name)
-                session.add = data.name
-                return redirect(url_for('staff'))
+            return redirect(url_for('all_orders_staff'))
         else:
-            error = 'Wrong username or password!'
-    return render_template('login.html', error=error)
+            flash('Login or password is not correct')
+
+    return render_template('login.html')
 
 
 @app.route('/logout')
 def logout():
-    session['logged_in'] = False
+    logout_user()
     return redirect(url_for('index'))
 
 
@@ -65,14 +97,14 @@ def pizza_list():
 
 @app.route('/pizza_detail/<int:pizza_id>')
 def pizza_detail(pizza_id):
-    pizza = Pizza.query.filter_by(pizza_id=pizza_id).first_or_404()
+    pizza = Pizza.query.filter_by(id=pizza_id).first_or_404()
     ingredient = Ingredient.query.all()
     return render_template('pizza_detail.html', pizza=pizza, ingredient=ingredient)
 
 
 @app.route('/add_order/<int:pizza_id>', methods=('GET', 'POST'))
 def add_order(pizza_id):
-    pizza = Pizza.query.filter_by(pizza_id=pizza_id).first()
+    pizza = Pizza.query.filter_by(id=pizza_id).first()
     content = request.values
     ing_list = []
     ing_price = 0
@@ -98,23 +130,28 @@ def add_order(pizza_id):
 
 
 @app.route('/staff')
+@login_required
 def staff():
     return render_template('base_staff.html')
 
 
 @app.route('/all_orders_staff')
+@login_required
 def all_orders_staff():
+    print(flask_login)
     orders = Order.query.join(Pizza).add_column(Pizza.name)
     return render_template('all_orders_staff.html', orders=orders)
 
 
 @app.route('/done/<int:order_id>', methods=('POST', 'GET'))
+@login_required
 def done(order_id):
-    order = Order.query.filter_by(order_id=order_id).first_or_404()
-
+    order = Order.query.filter_by(id=order_id).first_or_404()
+    print(flask_login.COOKIE_NAME)
     if request.method == 'POST':
         order.state = True
-        print(session)
+        # order.order_user =
+
         database.session.commit()
         return redirect(url_for('all_orders_staff'))
 
@@ -123,28 +160,32 @@ def done(order_id):
 
 
 @app.errorhandler(500)
-def internal_server_error(e):
+def internal_server_error():
     return 'Sorry, I`m just learning(', 500
 
 
 @app.route('/admin')
+@login_required
 def admin():
     return render_template('base_admin.html')
 
 
 @app.route('/all_orders_admin')
+@login_required
 def all_orders_admin():
     orders = Order.query.all()
     return render_template('all_orders_admin.html', orders=orders)
 
 
 @app.route('/db_edit')
+@login_required
 def db_edit():
     goods = Pizza.query.all()
     return render_template('db_edit.html', goods=goods)
 
 
 @app.route('/db_edit', methods=('GET', 'POST'))
+@login_required
 def add_new():
     if request.method == 'POST':
         pizza = Pizza(
@@ -166,8 +207,9 @@ def if_empty(new_value, old_value):
 
 
 @app.route('/update_item/<int:pizza_id>', methods=('POST', 'GET'))
+@login_required
 def update_item(pizza_id):
-    pizza = Pizza.query.filter_by(pizza_id=pizza_id).first_or_404()
+    pizza = Pizza.query.filter_by(id=pizza_id).first_or_404()
 
     if request.method == 'POST':
         new_name = request.form['name']
@@ -189,49 +231,35 @@ def update_item(pizza_id):
     return render_template('update_item.html', pizza=pizza)
 
 
-@app.route('/del_item', methods=('POST',))
+@app.route('/del_item', methods=('POST', 'GET'))
+@login_required
 def del_item():
-    pizza_id = int(request.form['pizza_id'])
-    pizza = Pizza.query.filter_by(pizza_id=pizza_id).first()
+    pizza_id = int(request.form.get('id'))
+    pizza = Pizza.query.filter_by(id=pizza_id).first()
     database.session.delete(pizza)
     database.session.commit()
     return redirect(url_for('db_edit'))
 
 
 @app.route('/ingredient_list')
+@login_required
 def ingredient_list():
     ingredient = Ingredient.query.all()
     return render_template('ingredient_list.html', ingredient=ingredient)
 
 
 @app.route('/user_list')
+@login_required
 def user_list():
     users = User.query.all()
     return render_template('user_list.html', users=users)
 
 
-@app.route('/user_list', methods=('GET', 'POST'))
-def add_user():
-    if request.method == 'POST':
-        role = True if request.form['role'] == 'true' else False
-
-        user = User(
-            name=request.form['name'],
-            last_name=request.form['last_name'],
-            login=request.form['login'],
-            password=crypto(request.form['password']),
-            role=role,
-        )
-        database.session.add(user)
-        database.session.commit()
-
-    return redirect(url_for('user_list'))
-
-
 @app.route('/del_user', methods=('POST',))
+@login_required
 def del_user():
-    credential_id = int(request.form['user_id'])
-    user = User.query.filter_by(credential_id=credential_id).first()
+    user_id = int(request.form['id'])
+    user = User.query.filter_by(id=user_id).first()
     database.session.delete(user)
     database.session.commit()
     return redirect(url_for('user_list'))

@@ -1,11 +1,12 @@
 from flask import Flask
 from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
 
 from config import Configuration
-from models.model import database
 
 app = Flask(__name__)
 app.config.from_object(Configuration)
-database.init_app(app)
-#manager = LoginManager(app)
-
+database = SQLAlchemy(app)
+manager = LoginManager(app)
+with app.app_context():
+    database.create_all()
