@@ -31,6 +31,6 @@ jobs:
       uses: akhileshns/heroku-deploy@v3.8.9
       with:
         heroku_api_key: ${{ secrets.HEROKU_API_TOKEN }}
-        heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+        heroku_app_name: ${{ pet-pos }}
         heroku_email: "palloncino.vin@gmail.com"
         usedocker: true
