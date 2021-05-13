@@ -1,1 +1,1 @@
-Welcome to POS - Pizza Ordering System
+Welcome to POS! - Pizza Ordering System
