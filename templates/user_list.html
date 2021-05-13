@@ -13,6 +13,7 @@
         {% if user.role == 0 %}
             <p><b>{{ user.name }} {{ user.last_name }}</b> --- Chef</p>
             <p><b>login:</b> {{ user.login }}</p>
+            <p><b>completed orders:</b> {{ user.completed_orders }}</p>
         {% endif %}
         <p></p>
         <form action="{{ url_for('del_user') }}" method="post">

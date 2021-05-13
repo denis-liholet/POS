@@ -43,11 +43,11 @@ class User(database.Model, UserMixin):
     login = database.Column(database.String(64), unique=True, nullable=False)
     password = database.Column(database.String(128), nullable=False)
     role = database.Column(database.Boolean, default=False)
-    completed_orders = database.Column(database.Integer)
+    completed_orders = database.Column(database.Integer, default=0)
     orders = database.relationship('Order', backref='user')
 
     def __repr__(self):
-        return f'{self.name, self.last_name, self.role}'
+        return f'{self.login}'
 
 
 @manager.user_loader

@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block content %}
-    {% for order in orders %}
+    {% for order, user in orders%}
         {% if order.state %}
-            <p>Order # <b>{{ order.id }}</b> -> <span style="color: green; "><b>READY</b></span></p>
+            <p>Order # <b>{{ order.id }}</b>, {{ order.user.name }} {{ order.user.last_name }} -> <span style="color: green; "><b>READY</b></span></p>
         {% else %}
             <p>Order # <b>{{ order.id }}</b> -> <span style="color: coral; "><b>BAKING</b></span></p>
         {% endif %}

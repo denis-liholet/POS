@@ -1,6 +1,5 @@
-import flask_login
 from flask import render_template, request, redirect, url_for, flash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import app
@@ -66,7 +65,7 @@ def login():
         user = User.query.filter_by(login=act_login).first()
 
         if user and check_password_hash(user.password, act_password):
-            login_user(user.name)
+            login_user(user)
             user_role = User.query.filter_by(login=act_login).first().role
             if user_role:
                 return redirect(url_for('admin'))
@@ -138,7 +137,6 @@ def staff():
 @app.route('/all_orders_staff')
 @login_required
 def all_orders_staff():
-    print(flask_login)
     orders = Order.query.join(Pizza).add_column(Pizza.name)
     return render_template('all_orders_staff.html', orders=orders)
 
@@ -147,11 +145,11 @@ def all_orders_staff():
 @login_required
 def done(order_id):
     order = Order.query.filter_by(id=order_id).first_or_404()
-    print(flask_login.COOKIE_NAME)
+    employee = User.query.filter_by(login=str(current_user)).first_or_404()
     if request.method == 'POST':
         order.state = True
-        # order.order_user =
-
+        order.order_user = employee.id
+        employee.completed_orders += 1
         database.session.commit()
         return redirect(url_for('all_orders_staff'))
 
@@ -173,7 +171,7 @@ def admin():
 @app.route('/all_orders_admin')
 @login_required
 def all_orders_admin():
-    orders = Order.query.all()
+    orders = Order.query.join(User).add_column(User.name)
     return render_template('all_orders_admin.html', orders=orders)
 
 
