@@ -1,5 +1,5 @@
 FROM python:3.7
-COPY ./POS/ /core/POS/
+COPY ./pos/ /core/pos/
 COPY ./requirements.txt /core/requirements.txt
 WORKDIR /core/
 RUN python -m pip install -U pip
