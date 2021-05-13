@@ -1,4 +1,4 @@
-from resources.utils import custom_sum
+from resources import custom_sum
 
 
 def test_custom_sum_1():
