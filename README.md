@@ -1,4 +1,4 @@
-Welcome to POS!  - Pizza Ordering System
+Welcome to POS!  - Pizza Ordering System  
 
 you can visit https://pet-pos.herokuapp.com/ to evaluate the application
 
