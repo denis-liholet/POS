@@ -1,0 +1,36 @@
+name : POS
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.8 ]
+    steps:
+    - uses: actions/checkout@v2
+    - run: git fetch --prune --unshallow
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version}}
+    - name: Display Python version
+      run: python -c "import sys; print(sys.version)"
+    - name: Install dependencies
+      run: |
+        python -m pip install -U pip
+        python -m pip install -r requirements.txt
+    - name: Run tests
+      run: python -m pytest .
+    - name: Deploy to Heroku
+      if: job.status == 'success'
+      uses: akhileshns/heroku-deploy@v3.8.9
+      with:
+        heroku_api_key: ${{ secrets.HEROKU_API_TOKEN }}
+        heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+        heroku_email: "palloncino.vin@gmail.com"
+        usedocker: true
