@@ -1,6 +1,6 @@
 from flask_login import UserMixin
 
-from app import manager, database
+from pos import manager, database
 
 
 class Pizza(database.Model):
