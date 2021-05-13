@@ -1,4 +1,4 @@
-name : CICD_TEST
+name : POS
 
 on:
   push:
