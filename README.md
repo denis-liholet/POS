@@ -1,6 +1,6 @@
 Welcome to POS!  - Pizza Ordering System
 
-you can visit https://petpos.herokuapp.com/ to evaluate the application
+you can visit https://pet-pos.herokuapp.com/ to evaluate the application
 
 - login: chef1, pass: 1111
 - login: chef2, pass: 1111
