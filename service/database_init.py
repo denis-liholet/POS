@@ -1,4 +1,4 @@
-from app import app, database
+from pos import app, database
 
 if __name__ == '__main__':
     with app.app_context():

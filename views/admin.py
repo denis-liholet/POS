@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required
 
-from app import app
+from pos import app
 from models.model import database, Pizza, Ingredient, User, Order
 from service.if_empty import if_empty
 

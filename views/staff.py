@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for
 from flask_login import login_required, current_user
 
-from app import app
+from pos import app
 from models.model import database, Pizza, User, Order
 
 

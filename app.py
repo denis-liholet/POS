@@ -1,9 +1,6 @@
-from flask import Flask
+from pos import app
 
-from config import Configuration
-from models.model import database, manager
+from views import admin, user, staff
 
-app = Flask(__name__)
-app.config.from_object(Configuration)
-database.init_app(app)
-manager.init_app(app)
+if __name__ == '__main__':
+    app.run()
