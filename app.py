@@ -1,7 +1,13 @@
-from pos import app, database
-from views import *
+from flask import Flask
+from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
 
-if __name__ == '__main__':
-    with app.app_context():
-        database.create_all()
-    app.run()
+from config import Configuration
+
+app = Flask(__name__)
+app.config.from_object(Configuration)
+database = SQLAlchemy(app)
+manager = LoginManager(app)
+
+with app.app_context():
+    database.create_all()

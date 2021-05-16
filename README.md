@@ -17,7 +17,7 @@ If you are a User, you can:
 If you’re a Chef, you can:
 - see customer orders
 - to execute the order by pressing the button "Done"
-- authorization required
+- authorization is required
 
 If you are an Administrator, you can:
 - view current orders
@@ -25,7 +25,7 @@ If you are an Administrator, you can:
 - to find out how many orders your employee has completed
 - add, edit, delete pizzas in the catalogue
 - delete users
-- authorization required
+- authorization is required
 
 You can also register yourself in any role using the tab "Sign up"
 
