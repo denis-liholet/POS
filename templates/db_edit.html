@@ -5,20 +5,29 @@
 {% endblock %}
 
 {% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <li><span style="color: red; "><b>{{ message }}</b></span></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
     <form action="{{ url_for('add_new') }}" method="post">
-            <p>Label: <input type="text" name=name></p>
-            <p>Description: <input type="text" name=description></p>
-            <p>Price: <input type="text" name=price></p>
-            <p>Link to image: <input type="text" name=image></p>
-            <p><input type=submit value=Add></p>
+        <p>Label: <input type="text" name=name></p>
+        <p>Description: <input type="text" name=description></p>
+        <p>Price: <input type="text" name=price></p>
+        <p>Link to image: <input type="text" name=image></p>
+        <p><input type=submit value=Add></p>
     </form>
     <p><h5><b>Catalog:</b></h5></p>
     <p>--------------------------</p>
     {% for pizza in goods %}
 
         <p><b>{{ pizza.name }}</b></p>
-            {{ pizza.description }}
-            <p><b>{{ pizza.price }} hrn.</b></p>
+        {{ pizza.description }}
+        <p><b>{{ pizza.price }} hrn.</b></p>
         <form action="{{ url_for('update_item', pizza_id=pizza.id) }}">
             <input type="hidden" name=pizza_id value="{{ pizza.id }}">
             <input type=submit value=Update>
@@ -28,7 +37,7 @@
             <input type="hidden" name=id value="{{ pizza.id }}">
             <input type=submit value=Delete>
         </form>
-            <p>--------------------------</p>
+        <p>--------------------------</p>
 
 
 
