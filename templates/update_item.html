@@ -20,10 +20,10 @@
 {% block additional_content %}
 
     <form action="{{ url_for('update_item', pizza_id=pizza.id) }}" method="post">
-            <p>Label: <input type="text" name=name></p>
-            <p>Description: <input type="text" name=description></p>
-            <p>Price: <input type="text" name=price></p>
-            <p>Link to image: <input type="text" name=image></p>
+            <p>Label: <input type="text" name=name value="{{ pizza.name }}"></p>
+            <p>Description: <input type="text" name=description value="{{ pizza.description }}"></p>
+            <p>Price: <input type="text" name=price value="{{ pizza.price }}"></p>
+            <p>Link to image: <input type="text" name=image value="{{ pizza.image }}"></p>
             <p><input type=submit value=Update></p>
     </form>
 
