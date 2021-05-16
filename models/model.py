@@ -1,6 +1,8 @@
-from flask_login import UserMixin
+from flask_login import UserMixin, LoginManager
+from flask_sqlalchemy import SQLAlchemy
 
-from app import manager, database
+database = SQLAlchemy()
+manager = LoginManager()
 
 
 class Pizza(database.Model):
@@ -26,7 +28,7 @@ class Ingredient(database.Model):
 
 class Order(database.Model):
     id = database.Column(database.Integer, primary_key=True)
-    order_pizza = database.Column(database.Integer, database.ForeignKey('pizza.id'), nullable=False)
+    order_pizza = database.Column(database.Integer, database.ForeignKey('pizza.id'), nullable=True)
     ingredient = database.Column(database.String(300), nullable=True)
     total_amount = database.Column(database.Numeric(scale=2), nullable=True)
     order_user = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=True)

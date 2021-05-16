@@ -1,5 +1,5 @@
 from app import app, database
-from views import *
 
 if __name__ == '__main__':
-    app.run()
+    with app.app_context():
+        database.create_all()
