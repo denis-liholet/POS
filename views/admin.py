@@ -3,6 +3,7 @@ from flask_login import login_required
 
 from app import app
 from models.model import database, Pizza, Ingredient, User, Order
+from service.if_empty import if_empty
 
 
 # -------------------------------- ADMIN PART -----------------------------------------
@@ -58,12 +59,6 @@ def add_new():
         database.session.commit()
 
     return redirect(url_for('db_edit'))
-
-
-def if_empty(new_value, old_value):
-    if new_value:
-        return new_value
-    return old_value
 
 
 @app.route('/update_item/<int:pizza_id>', methods=('POST', 'GET'))
