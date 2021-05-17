@@ -16,11 +16,6 @@ def redirect_to_signin(response):
     return response
 
 
-@app.route('/base')
-def base():
-    return render_template('base_user.html')
-
-
 @app.route('/')
 @app.route('/index')
 def index():

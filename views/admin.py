@@ -9,11 +9,6 @@ from service.if_empty import if_empty
 # -------------------------------- ADMIN PART -----------------------------------------
 
 
-@app.errorhandler(500)
-def internal_server_error():
-    return 'Sorry, I`m just learning(', 500
-
-
 @app.route('/admin')
 @login_required
 def admin():

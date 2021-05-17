@@ -49,7 +49,7 @@ class User(database.Model, UserMixin):
     orders = database.relationship('Order', backref='user')
 
     def __repr__(self):
-        return f'{self.login}'
+        return f'{self.name}'
 
 
 @manager.user_loader
