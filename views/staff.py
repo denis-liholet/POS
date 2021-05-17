@@ -25,7 +25,7 @@ def all_orders_staff():
 @login_required
 def done(order_id):
     order = Order.query.filter_by(id=order_id).first_or_404()
-    employee = User.query.filter_by(login=str(current_user)).first_or_404()
+    employee = User.query.filter_by(login=str(current_user.login)).first_or_404()
     if request.method == 'POST':
         order.state = True
         order.order_user = employee.id
