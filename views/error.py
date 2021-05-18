@@ -3,7 +3,7 @@ from pos import app
 
 @app.errorhandler(500)
 def internal_server_error(error):
-    message_1 = '<h1>An unexpected error has occured</h1>'
+    message_1 = '<h1>An unexpected error has occurred</h1>'
     message_2 = '<p>The administrator has been notified. Sorry for the inconvenience!</p>'
     return message_1 + message_2, 500
 

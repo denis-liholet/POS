@@ -5,6 +5,15 @@
 {% endblock %}
 
 {% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <li><span style="color: red; "><b>{{ message }}</b></span></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
     {% for user in users %}
         {% if user.role == 1 %}
             <p><b>{{ user.name }} {{ user.last_name }}</b> --- Administrator </p>
