@@ -29,17 +29,17 @@ class TestUserViews(unittest.TestCase):
         response = self.app.get('/logout')
         assert response.status_code == 302
 
-    def test_all_orders(self):
-        response = self.app.get('/all_orders')
-        assert response.status_code == 200
+    # def test_all_orders(self):
+    #     response = self.app.get('/all_orders')
+    #     assert response.status_code == 200
 
-    def test_pizza_list(self):
-        response = self.app.get('/pizza_list')
-        assert response.status_code == 200
+    # def test_pizza_list(self):
+    #     response = self.app.get('/pizza_list')
+    #     assert response.status_code == 200
 
-    def test_pizza_detail(self):
-        response = self.app.get('/pizza_detail/1')
-        assert response.status_code == 200
+    # def test_pizza_detail(self):
+    #     response = self.app.get('/pizza_detail/1')
+    #     assert response.status_code == 200
 
 
 class TestAdminViews(unittest.TestCase):
