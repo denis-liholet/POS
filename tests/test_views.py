@@ -5,7 +5,13 @@ from views import admin, user, staff, error
 
 
 class TestUserViews(unittest.TestCase):
-    app = app.test_client()
+
+    def setUp(self):
+        self.app = app.test_client()
+        self.ctx = app.test_request_context()
+
+    def tearDown(self):
+        pass
 
     def test_index(self):
         response = self.app.get('/index')
