@@ -1,9 +1,6 @@
 import unittest
 
-import sqlalchemy.exc
-
 from pos import app
-from models.model import *
 from views import admin, user, staff, error
 
 
@@ -11,11 +8,8 @@ class TestUserViews(unittest.TestCase):
     app = app.test_client()
 
     def test_index(self):
-        try:
-            response = self.app.get('/index')
-            assert response.status_code == 200
-        except sqlalchemy.exc.OperationalError:
-            pass
+        response = self.app.get('/index')
+        assert response.status_code == 200
 
     def test_sign_up(self):
         response = self.app.get('/sign_up')
@@ -30,26 +24,16 @@ class TestUserViews(unittest.TestCase):
         assert response.status_code == 302
 
     def test_all_orders(self):
-        try:
-            response = self.app.get('/all_orders')
-            assert response.status_code == 200
-        except sqlalchemy.exc.OperationalError:
-            pass
+        response = self.app.get('/all_orders')
+        assert response.status_code == 200
 
     def test_pizza_list(self):
-        try:
-            response = self.app.get('/pizza_list')
-            assert response.status_code == 200
-        except sqlalchemy.exc.OperationalError:
-            pass
+        response = self.app.get('/pizza_list')
+        assert response.status_code == 200
 
     def test_pizza_detail(self):
-        try:
-            response = self.app.get('/pizza_detail/1')
-            assert response.status_code == 200
-        except sqlalchemy.exc.OperationalError:
-            pass
-
+        response = self.app.get('/pizza_detail/1')
+        assert response.status_code == 200
 
 
 class TestAdminViews(unittest.TestCase):
