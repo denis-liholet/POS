@@ -24,3 +24,5 @@ six==1.15.0
 SQLAlchemy==1.4.11
 toml==0.10.2
 Werkzeug==1.0.1
+
+Faker~=8.2.0

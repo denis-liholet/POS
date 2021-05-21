@@ -1,1 +1,1 @@
-__all__ = ['test_app.py', ]
+__all__ = ['test_staff_utils', 'test_admin_utils', 'test_views']
