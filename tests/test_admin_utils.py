@@ -6,7 +6,7 @@ from flask import request
 from models.model import *
 from pos import app
 from service.admin_utils import *
-from views import admin, user, staff, error
+from views import admin
 
 
 def populate_test_db():

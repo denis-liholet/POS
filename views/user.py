@@ -1,9 +1,9 @@
 from flask import render_template, request, redirect, url_for, flash
-from flask_login import login_user, logout_user
+from flask_login import logout_user, login_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from models.model import database, Pizza, Ingredient, Order, User
 from pos import app
-from models.model import database, Pizza, Ingredient, User, Order
 from service.admin_utils import get_all_items
 
 
@@ -23,8 +23,14 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/sign_up', methods=['GET', 'POST'])
+@app.route('/sign_up', methods=('GET', 'POST'))
 def sign_up():
+    """
+    This endpoint registers new user using data from request. If there is no data in login, password
+    or password2 fields user has to fill required fields again. If password and password2 are not
+    match user has to retype passwords. If all request values are correct - new user will be added to database.
+    The password will be encrypted by SHA256 algorithm
+    """
     act_login = request.form.get('login')
     act_password = request.form.get('password')
     act_password2 = request.form.get('password2')
@@ -33,7 +39,7 @@ def sign_up():
     role = True if request.form.get('role') == 'true' else False
 
     if request.method == 'POST':
-        if not (act_login or act_password or act_password2):
+        if not act_login or not act_password or not act_password2:
             flash('Please fill all fields!')
         elif act_password != act_password2:
             flash('Passwords are not equal!')
@@ -94,6 +100,7 @@ def pizza_list():
 def pizza_detail(pizza_id):
     pizza = Pizza.query.filter_by(id=pizza_id).first_or_404()
     ingredient = get_all_items(Ingredient)
+    print(pizza)
     return render_template('pizza_detail.html', pizza=pizza, ingredient=ingredient)
 
 

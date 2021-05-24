@@ -31,6 +31,3 @@ You can also register yourself in any role using the tab "Sign up"
 
 
 Should you have any questions or issues, please feel free to contact by e-mail: denis.liholet@gmail.com
-
-
-https://coveralls.io/repos/github/denis-liholet/POS/badge.svg?branch=master(Coverage Status)!:https://coveralls.io/github/denis-liholet/POS?branch=master

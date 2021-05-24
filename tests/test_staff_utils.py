@@ -3,7 +3,6 @@ import unittest
 from models.model import *
 from pos import app
 from service.staff_utils import *
-from views import admin, user, staff, error
 
 
 def populate_test_db():
