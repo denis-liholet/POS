@@ -3,7 +3,7 @@ name : POS
 on:
   push:
     branches:
-      - 'main'
+      - '*'
 
 jobs:
   build:
