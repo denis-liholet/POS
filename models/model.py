@@ -6,6 +6,8 @@ manager = LoginManager()
 
 
 class Pizza(database.Model):
+    __tablename__ = 'pizza'
+
     id = database.Column(database.Integer, primary_key=True)
     name = database.Column(database.String(100), unique=True, nullable=False)
     description = database.Column(database.String(100), unique=False, nullable=False)
@@ -18,6 +20,8 @@ class Pizza(database.Model):
 
 
 class Ingredient(database.Model):
+    __tablename__ = 'ingredient'
+
     id = database.Column(database.Integer, primary_key=True)
     type = database.Column(database.String(100), unique=True, nullable=False)
     price = database.Column(database.Numeric(scale=2), nullable=False)
@@ -27,6 +31,8 @@ class Ingredient(database.Model):
 
 
 class Order(database.Model):
+    __tablename__ = 'order'
+
     id = database.Column(database.Integer, primary_key=True)
     order_pizza = database.Column(database.Integer, database.ForeignKey('pizza.id'), nullable=True)
     ingredient = database.Column(database.String(300), nullable=True)
@@ -39,6 +45,8 @@ class Order(database.Model):
 
 
 class User(database.Model, UserMixin):
+    __tablename__ = 'user'
+
     id = database.Column(database.Integer, primary_key=True)
     name = database.Column(database.String, nullable=False)
     last_name = database.Column(database.String, nullable=False)

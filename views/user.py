@@ -4,6 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from pos import app
 from models.model import database, Pizza, Ingredient, User, Order
+from service.admin_utils import get_all_items
 
 
 # -------------------------------- USER PART -----------------------------------------
@@ -79,20 +80,20 @@ def logout():
 
 @app.route('/all_orders')
 def all_orders():
-    orders = Order.query.all()
+    orders = get_all_items(Order)
     return render_template('all_orders_user.html', orders=orders)
 
 
 @app.route('/pizza_list')
 def pizza_list():
-    goods = Pizza.query.all()
+    goods = get_all_items(Pizza)
     return render_template('pizza_list.html', goods=goods)
 
 
 @app.route('/pizza_detail/<int:pizza_id>')
 def pizza_detail(pizza_id):
     pizza = Pizza.query.filter_by(id=pizza_id).first_or_404()
-    ingredient = Ingredient.query.all()
+    ingredient = get_all_items(Ingredient)
     return render_template('pizza_detail.html', pizza=pizza, ingredient=ingredient)
 
 
