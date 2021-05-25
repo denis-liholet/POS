@@ -6,6 +6,7 @@ manager = LoginManager()
 
 
 class Pizza(database.Model):
+
     __tablename__ = 'pizza'
 
     id = database.Column(database.Integer, primary_key=True)
@@ -20,6 +21,7 @@ class Pizza(database.Model):
 
 
 class Ingredient(database.Model):
+
     __tablename__ = 'ingredient'
 
     id = database.Column(database.Integer, primary_key=True)
@@ -31,6 +33,7 @@ class Ingredient(database.Model):
 
 
 class Order(database.Model):
+
     __tablename__ = 'order'
 
     id = database.Column(database.Integer, primary_key=True)
@@ -45,6 +48,7 @@ class Order(database.Model):
 
 
 class User(database.Model, UserMixin):
+
     __tablename__ = 'user'
 
     id = database.Column(database.Integer, primary_key=True)

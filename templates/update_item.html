@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block content %}
+
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             <ul class=flashes>
@@ -22,10 +23,6 @@
 
 {% endblock %}
 
-
-
-
-
 {% block additional_content %}
 
     <form action="{{ url_for('update_item', pizza_id=pizza.id) }}" method="post">
@@ -35,6 +32,5 @@
         <p>Link to image: <input type="text" name=image value="{{ pizza.image }}"></p>
         <p><input type=submit value=Update></p>
     </form>
-
 
 {% endblock %}

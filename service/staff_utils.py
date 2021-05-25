@@ -12,4 +12,5 @@ def order_done(order, employee) -> None:
     order.state = True
     order.order_user = employee.id
     employee.completed_orders += 1
+
     database.session.commit()
