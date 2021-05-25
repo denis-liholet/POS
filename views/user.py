@@ -28,7 +28,8 @@ def sign_up():
     """
     This endpoint registers new user using data from request. If there is no data in login, password
     or password2 fields user has to fill required fields again. If password and password2 are not
-    match user has to retype passwords. If all request values are correct - new user will be added to database.
+    match user has to retype passwords. If entered login is already exist user has to choose another one.
+    If all request values are correct - new user will be added to database.
     The password will be encrypted by SHA256 algorithm
     """
     act_login = request.form.get('login')
@@ -39,8 +40,11 @@ def sign_up():
     role = True if request.form.get('role') == 'true' else False
 
     if request.method == 'POST':
+        if_login_exist = User.query.filter_by(login=act_login).first()
         if not act_login or not act_password or not act_password2:
             flash('Please fill all fields!')
+        elif if_login_exist:
+            flash('This login is already exist! Try another one')
         elif act_password != act_password2:
             flash('Passwords are not equal!')
         else:
