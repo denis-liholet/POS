@@ -7,9 +7,9 @@
 {% block content %}
     {% for order in orders %}
         {% if order.state %}
-            <p>Order # <b>{{ order.id }}</b> -> <span style="color: green; "><b>READY</b></span></p>
+            <p>Order # <strong>{{ order.id }}</strong> -> <span style="color: green; "><strong>READY</strong></span></p>
         {% else %}
-            <p>Order # <b>{{ order.id }}</b> -> <span style="color: coral; "><b>BAKING</b></span></p>
+            <p>Order # <strong>{{ order.id }}</strong> -> <span style="color: coral; "><strong>BAKING</strong></span></p>
         {% endif %}
     {% endfor %}
 {% endblock %}

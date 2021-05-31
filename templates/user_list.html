@@ -1,7 +1,7 @@
 {% extends 'base_admin.html' %}
 
 {% block content_title %}
-    <b>Users:</b>
+    <strong>Users:</strong>
 {% endblock %}
 
 {% block content %}
@@ -9,20 +9,20 @@
         {% if messages %}
             <ul class=flashes>
                 {% for message in messages %}
-                    <li><span style="color: red; "><b>{{ message }}</b></span></li>
+                    <li><span style="color: red; "><strong>{{ message }}</strong></span></li>
                 {% endfor %}
             </ul>
         {% endif %}
     {% endwith %}
     {% for user in users %}
         {% if user.role == 1 %}
-            <p><b>{{ user.name }} {{ user.last_name }}</b> --- Administrator </p>
-            <p><b>login:</b> {{ user.login }}</p>
+            <p><strong>{{ user.name }} {{ user.last_name }}</strong> --- Administrator </p>
+            <p><strong>login:</strong> {{ user.login }}</p>
         {% endif %}
         {% if user.role == 0 %}
-            <p><b>{{ user.name }} {{ user.last_name }}</b> --- Chef</p>
-            <p><b>login:</b> {{ user.login }}</p>
-            <p><b>completed orders:</b> {{ user.completed_orders }}</p>
+            <p><strong>{{ user.name }} {{ user.last_name }}</strong> --- Chef</p>
+            <p><strong>login:</strong> {{ user.login }}</p>
+            <p><strong>completed orders:</strong> {{ user.completed_orders }}</p>
         {% endif %}
         <p></p>
         <form action="{{ url_for('del_user') }}" method="post">
