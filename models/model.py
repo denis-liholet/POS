@@ -14,6 +14,7 @@ class Pizza(database.Model):
     description = database.Column(database.String(100), unique=False, nullable=False)
     price = database.Column(database.Numeric(scale=2), nullable=False)
     image = database.Column(database.String(100))
+    rate = database.Column(database.Integer, default=0)
     orders = database.relationship('Order', backref='pizza')
 
     def __repr__(self):

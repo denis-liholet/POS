@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import logout_user, login_user
+from sqlalchemy import desc
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from models.model import database, Pizza, Ingredient, Order, User
@@ -26,10 +27,10 @@ def index():
 @app.route('/sign_up', methods=('GET', 'POST'))
 def sign_up():
     """
-    This endpoint registers new user using data from request. If there is no data in login, password
-    or password2 fields user has to fill required fields again. If password and password2 are not
-    match user has to retype passwords. If entered login is already exist user has to choose another one.
-    If all request values are correct - new user will be added to database.
+    This endpoint registers a new user using the data from request. If there is no data in login, password
+    or password2 fields user has to fill required fields up again. If password and password2 do not
+    match the user has to retype the passwords. If an entered login already exists the user has to choose another one.
+    If all request values are correct - a new user will be added to database.
     The password will be encrypted by SHA256 algorithm
     """
     act_login = request.form.get('login')
@@ -42,9 +43,9 @@ def sign_up():
     if request.method == 'POST':
         if_login_exist = User.query.filter_by(login=act_login).first()
         if not act_login or not act_password or not act_password2:
-            flash('Please fill all fields!')
+            flash('Please fill all fields up!')
         elif if_login_exist:
-            flash('This login is already exist! Try another one')
+            flash('This login already exists! Try another one')
         elif act_password != act_password2:
             flash('Passwords are not equal!')
         else:
@@ -94,9 +95,18 @@ def all_orders():
     return render_template('all_orders_user.html', orders=orders)
 
 
-@app.route('/pizza_list')
+@app.route('/pizza_list', methods=('GET', 'POST'))
 def pizza_list():
-    goods = get_all_items(Pizza)
+    if request.method == 'GET':
+        goods = get_all_items(Pizza)
+    if request.method == 'POST':
+        if request.form.get('name') == 'price':
+            goods = Pizza.query.order_by(Pizza.price)
+        if request.form.get('name') == 'name':
+            goods = Pizza.query.order_by(Pizza.name)
+        if request.form.get('name') == 'rate':
+            goods = Pizza.query.order_by(desc(Pizza.rate))
+
     return render_template('pizza_list.html', goods=goods)
 
 
@@ -104,7 +114,6 @@ def pizza_list():
 def pizza_detail(pizza_id):
     pizza = Pizza.query.filter_by(id=pizza_id).first_or_404()
     ingredient = get_all_items(Ingredient)
-    print(pizza)
     return render_template('pizza_detail.html', pizza=pizza, ingredient=ingredient)
 
 
@@ -130,3 +139,17 @@ def add_order(pizza_id):
         database.session.commit()
 
         return render_template('order_info.html', pizza=pizza, order=order)
+
+
+@app.route('/add_rate/<int:pizza_id>', methods=('GET', 'POST'))
+def add_rate(pizza_id):
+    pizza = Pizza.query.filter_by(id=pizza_id).first()
+    if request.method == 'POST':
+        if request.form.get('like') == '1':
+            pizza.rate += 1
+        if request.form.get('dislike') == '2':
+            pizza.rate -= 1
+
+        database.session.commit()
+
+    return redirect(url_for('pizza_detail', pizza_id=pizza_id))

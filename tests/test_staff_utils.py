@@ -1,8 +1,8 @@
 import unittest
 
-from models.model import *
-from pos import app
-from service.staff_utils import *
+from models.model import User, Order
+from pos import app, database
+from service.staff_utils import order_done
 
 
 def populate_test_db():
@@ -42,8 +42,8 @@ class TestStaffUtils(unittest.TestCase):
             employee = User.query.filter_by(role=False).first()
             order = Order.query.filter_by(total_amount=50).first()
             order_done(order, employee)
-            assert order.state is True
-            assert employee.completed_orders == 1
+            self.assertEqual(order.state, True)
+            self.assertEqual(employee.completed_orders, 1)
 
 
 if __name__ == '__main__':

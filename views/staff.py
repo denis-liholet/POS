@@ -1,9 +1,9 @@
 from flask import render_template, request, redirect, url_for
 from flask_login import login_required, current_user
 
-from pos import app
 from models.model import Pizza, User, Order
-from service.staff_utils import *
+from pos import app
+from service.staff_utils import order_done
 
 
 # -------------------------------- STAFF PART -----------------------------------------

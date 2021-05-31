@@ -6,10 +6,10 @@ from pos import database
 
 def if_empty(new_value, old_value):
     """
-    This function returns old value if new value is void
-    :param new_value: incoming value that checks
+    This function returns an old value if a new one is empty
+    :param new_value: an incoming value which is trying out
     :param old_value: previous value
-    :return: new value if it is not void
+    :return: a new value if it was not empty
     """
     if new_value:
         return new_value
@@ -18,7 +18,7 @@ def if_empty(new_value, old_value):
 
 def get_all_items(model_class):
     """
-    This function returns all rows from table in database,
+    This function returns all the rows from table in database,
     similar to "SELECT * FROM table_name"
     :param model_class: ORM-based class of model
     :return: all data from the table
@@ -28,7 +28,7 @@ def get_all_items(model_class):
 
 def add_new_pizza(request) -> None:
     """
-    This function adds new item to Pizza table using request parameter "form"
+    This function adds a new item to Pizza table using the request parameter "form"
     :param request: request by POST method
     :return: None
     """
@@ -39,8 +39,8 @@ def add_new_pizza(request) -> None:
     try:
         price = round(float(request.form['price']), 2)
     except ValueError:
-        flash('Check your input for price field. Price could be a number format only. Pizza price has been '
-              'set to 0.00 hrn, you should change this value !!!')
+        flash('Check your input on the price field. The price could be only in a number format.'
+              'The pizza price has been set to 0.00 hrn, you should change this value !!!')
         price = 0
 
     pizza = Pizza(name=name, description=description, price=price, image=image)
@@ -53,8 +53,8 @@ def add_new_pizza(request) -> None:
 
 def update_pizza(request, pizza):
     """
-    This function updates exist item fields. Checks input value for price field by handling
-    VallueError. If it raised in case of non-digit value input than previous price value will not be change
+    This function updates exist item fields. Checks input value for the price field by handling
+    VallueError. If it raises in the case of non-digit value input then the previous price value will not be changed
     :param request: request by POST method
     :param pizza: row from Pizza table
     :return: redirect to "/db_edit" endpoint
@@ -66,8 +66,8 @@ def update_pizza(request, pizza):
     try:
         new_price = round(float(request.form['price']), 2)
     except ValueError:
-        flash('Check your input for price field. Price could be a number format only. Pizza price has not been '
-              'changed.')
+        flash('Check your input on the price field. The price could only be in a number format. '
+              'The pizza price will not be changed')
         new_price = pizza.price
 
     pizza.name = if_empty(new_name, pizza.name)
@@ -84,7 +84,7 @@ def update_pizza(request, pizza):
 
 def del_pizza(request) -> None:
     """
-    This function delete item from Pizza table using request parameter "form"
+    This function deletes an item from Pizza table using a request parameter "form"
     :param request: request by POST-method
     :return: None
     """
@@ -99,7 +99,7 @@ def del_pizza(request) -> None:
 
 def delete_user(request) -> None:
     """
-    This function delete item from User table using request parameter "form".
+    This function deletes an item from User table using a request parameter "form".
     :param request: request by POST-method
     :return: None
     """

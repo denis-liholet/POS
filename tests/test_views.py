@@ -1,25 +1,21 @@
 import unittest
 
 from pos import app
-from views import admin, user, staff, error
+from views import admin, user, staff
 
 
 class TestUserViews(unittest.TestCase):
 
     def setUp(self):
         self.app = app.test_client()
-        self.ctx = app.test_request_context()
-
-    def tearDown(self):
-        pass
 
     def test_index(self):
         response = self.app.get('/index')
-        assert response.status_code == 200
+        self.assertEqual(response.status_code, 200)
 
     def test_sign_up(self):
         response = self.app.get('/sign_up')
-        assert response.status_code == 200
+        self.assertEqual(response.status_code, 200)
 
     def test_login(self):
         response = self.app.get('/login')
@@ -27,22 +23,22 @@ class TestUserViews(unittest.TestCase):
 
     def test_logout(self):
         response = self.app.get('/logout')
-        assert response.status_code == 302
+        self.assertEqual(response.status_code, 302)
 
     @unittest.skip
     def test_all_orders(self):
         response = self.app.get('/all_orders')
-        assert response.status_code == 200
+        self.assertEqual(response.status_code, 200)
 
     @unittest.skip
     def test_pizza_list(self):
         response = self.app.get('/pizza_list')
-        assert response.status_code == 200
+        self.assertEqual(response.status_code, 200)
 
     @unittest.skip
     def test_pizza_detail(self):
         response = self.app.get('/pizza_detail/1')
-        assert response.status_code == 200
+        self.assertEqual(response.status_code, 200)
 
 
 class TestAdminViews(unittest.TestCase):
@@ -51,45 +47,38 @@ class TestAdminViews(unittest.TestCase):
         self.app = app.test_client()
         self.ctx = app.test_request_context()
 
-    def tearDown(self):
-        pass
-
     def test_admin(self):
         response = self.app.get('/admin')
         assert response.status_code == 302
 
     def test_all_orders_admin(self):
         response = self.app.get('/all_orders_admin')
-        assert response.status_code == 302
+        self.assertEqual(response.status_code, 302)
 
     def test_db_edit(self):
         response = self.app.get('/db_edit')
-        assert response.status_code == 302
+        self.assertEqual(response.status_code, 302)
 
     def test_ingredient_list(self):
         response = self.app.get('/ingredient_list')
-        assert response.status_code == 302
+        self.assertEqual(response.status_code, 302)
 
     def test_user_list(self):
         response = self.app.get('/user_list')
-        assert response.status_code == 302
+        self.assertEqual(response.status_code, 302)
 
 
 class TestStaffViews(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
-        self.ctx = app.test_request_context()
-
-    def tearDown(self):
-        pass
 
     def test_staff(self):
         response = self.app.get('/staff')
-        assert response.status_code == 302
+        self.assertEqual(response.status_code, 302)
 
     def all_orders_staff(self):
         response = self.app.get('/all_orders_staff')
-        assert response.status_code == 302
+        self.assertEqual(response.status_code, 302)
 
 
 if __name__ == '__main__':

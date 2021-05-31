@@ -1,8 +1,7 @@
 import unittest
 
-from models.model import Order, Ingredient
-from pos import app
-from service.admin_utils import *
+from models.model import Order, Ingredient, Pizza, User
+from pos import app, database
 
 
 def populate_test_db():

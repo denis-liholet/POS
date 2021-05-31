@@ -8,14 +8,21 @@
 
     {{ pizza.description }}
 
-    <p><h5><b>{{ pizza.price }} hrn.</b></h5></p>
+    <p><h5><strong>{{ pizza.price }} hrn.</strong></h5></p>
 
     <img src="{{ pizza.image }}" alt="something went wrong :(">
 
+    <form action="{{ url_for('add_rate', pizza_id=pizza.id) }}" method="post">
+    <button type="submit" formmethod="post" name="like" value="1">
+        <img src="\static\like.jpg" alt="something went wrong :(" style="vertical-align: middle" ></button>
+    <button type="submit" formmethod="post" name="dislike" value="2">
+        <img src="\static\dislike.jpg" alt="something went wrong :(" style="vertical-align: middle"></button>
     <p></p>
+    </form>
+    <p>Current pizza rate: {{ pizza.rate }}</p>
 
 
-    <h5><b>You can add:</b></h5>
+    <h5><strong>You can add:</strong></h5>
     <p></p>
 
     <form action="{{ url_for('add_order', pizza_id=pizza.id) }}" method="post">

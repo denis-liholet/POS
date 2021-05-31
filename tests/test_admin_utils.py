@@ -3,10 +3,9 @@ import unittest
 from faker import Faker
 from flask import request
 
-from models.model import *
-from pos import app
-from service.admin_utils import *
-from views import admin
+from models.model import Ingredient, Pizza, User
+from pos import app, database
+from service.admin_utils import if_empty, get_all_items, add_new_pizza, update_pizza, del_pizza, delete_user
 
 
 def populate_test_db():
@@ -52,14 +51,14 @@ class TestAdminUtils(unittest.TestCase):
             database.drop_all()
 
     def test_if_empty_1(self):
-        assert if_empty(None, 1) == 1
-        assert if_empty(1, None) == 1
+        self.assertEqual(if_empty(None, 1), 1)
+        self.assertEqual(if_empty(1, None), 1)
 
     def test_get_all_items(self):
         with app.app_context():
-            assert len(get_all_items(Pizza)) == 5
-            assert len(get_all_items(Ingredient)) == 5
-            assert len(get_all_items(User)) == 5
+            self.assertEqual(len(get_all_items(Pizza)), 5)
+            self.assertEqual(len(get_all_items(Ingredient)), 5)
+            self.assertEqual(len(get_all_items(User)), 5)
 
     def test_add_new_pizza(self):
         with app.app_context():
@@ -70,11 +69,11 @@ class TestAdminUtils(unittest.TestCase):
                 'price': ''}
             ):
                 add_new_pizza(request)
-                assert Pizza.query.count() == 6
+                self.assertEqual(Pizza.query.count(), 6)
                 item = Pizza.query.filter_by(name='test_name').first()
-                assert item.description == 'test_description'
-                assert item.image == 'test_path'
-                assert item.price == 0
+                self.assertEqual(item.description, 'test_description')
+                self.assertEqual(item.image, 'test_path')
+                self.assertEqual(item.price, 0)
 
     def test_update_pizza(self):
         with app.app_context():
@@ -86,22 +85,22 @@ class TestAdminUtils(unittest.TestCase):
             ):
                 item = Pizza.query.filter_by(id=1).first()
                 update_pizza(request, item)
-                assert item.name == 'test_name'
-                assert item.description == 'test_description'
-                assert item.image == 'test_path'
-                assert item.price == 777
+                self.assertEqual(item.name, 'test_name')
+                self.assertEqual(item.description, 'test_description')
+                self.assertEqual(item.image, 'test_path')
+                self.assertEqual(item.price, 777)
 
     def test_del_pizza(self):
         with app.app_context():
             with app.test_request_context(data={'id': 1}):
                 del_pizza(request)
-                assert Pizza.query.count() == 4
+                self.assertEqual(Pizza.query.count(), 4)
 
     def test_delete_user(self):
         with app.app_context():
             with app.test_request_context(data={'id': 1}):
                 delete_user(request)
-                assert User.query.count() == 4
+                self.assertEqual(User.query.count(), 4)
 
 
 if __name__ == '__main__':
