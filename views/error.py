@@ -1,4 +1,4 @@
-from pos import app
+from app import app
 
 
 @app.errorhandler(500)

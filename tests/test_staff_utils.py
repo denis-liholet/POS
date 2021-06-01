@@ -1,7 +1,7 @@
 import unittest
 
 from models.model import User, Order
-from pos import app, database
+from app import app, database
 from service.staff_utils import order_done
 
 

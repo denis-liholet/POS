@@ -1,6 +1,6 @@
 import unittest
 
-from pos import app
+from app import app
 from views import admin, user, staff
 
 

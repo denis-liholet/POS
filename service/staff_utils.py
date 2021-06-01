@@ -1,4 +1,4 @@
-from pos import database
+from app import database
 
 
 def order_done(order, employee) -> None:

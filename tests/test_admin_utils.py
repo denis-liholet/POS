@@ -4,7 +4,7 @@ from faker import Faker
 from flask import request
 
 from models.model import Ingredient, Pizza, User
-from pos import app, database
+from app import app, database
 from service.admin_utils import if_empty, get_all_items, add_new_pizza, update_pizza, del_pizza, delete_user
 
 

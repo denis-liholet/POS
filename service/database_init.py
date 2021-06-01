@@ -1,4 +1,4 @@
-from pos import app, database
+from app import app, database
 
 # database creating
 if __name__ == '__main__':

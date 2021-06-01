@@ -1,7 +1,7 @@
 from flask import flash, redirect, url_for
 
 from models.model import Pizza, User
-from pos import database
+from app import database
 
 
 def if_empty(new_value, old_value):
@@ -36,19 +36,23 @@ def add_new_pizza(request) -> None:
     description = request.form['description']
     image = request.form['image']
 
-    try:
-        price = round(float(request.form['price']), 2)
-    except ValueError:
-        flash('Check your input on the price field. The price could be only in a number format.'
-              'The pizza price has been set to 0.00 hrn, you should change this value !!!')
-        price = 0
+    not_unique = Pizza.query.filter_by(name=name).first()
 
-    pizza = Pizza(name=name, description=description, price=price, image=image)
+    if not_unique:
+        return flash('Pizza name should be an unique')
+    else:
+        try:
+            price = round(float(request.form['price']), 2)
+        except ValueError:
+            flash('Check your input on the price field. The price could be only in a number format.'
+                  'The pizza price has been set to 0.00 hrn, you should change this value.')
+            price = 0
+        pizza = Pizza(name=name, description=description, price=price, image=image)
 
-    database.session.add(pizza)
-    database.session.commit()
+        database.session.add(pizza)
+        database.session.commit()
 
-    flash(f'Pizza "{pizza.name}" has been added.')
+        flash(f'Pizza "{pizza.name}" has been added.')
 
 
 def update_pizza(request, pizza):
