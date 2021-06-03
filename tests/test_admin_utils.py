@@ -6,6 +6,7 @@ from flask import request
 from models.model import Ingredient, Pizza, User
 from app import app, database
 from service.admin_utils import if_empty, get_all_items, add_new_pizza, update_pizza, del_pizza, delete_user
+from views.user import add_rate
 
 
 def populate_test_db():
@@ -101,6 +102,15 @@ class TestAdminUtils(unittest.TestCase):
             with app.test_request_context(data={'id': 1}):
                 delete_user(request)
                 self.assertEqual(User.query.count(), 4)
+
+    # def test_add_rate(self):
+    #     with app.app_context():
+    #         with app.test_request_context(data={'id': 1, 'like': 1}):
+    #             item = Pizza.query.filter_by(id=1).first()
+    #             add_rate(request)
+    #
+    #             self.assertEqual(item.rate, 1)
+
 
 
 if __name__ == '__main__':
