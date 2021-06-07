@@ -1,13 +1,52 @@
 import unittest
 
-from app import app
+from faker import Faker
+
+from app import app, database
+from models.model import Pizza, Ingredient, User
 from views import admin, user, staff
+
+def populate_test_db():
+    fake = Faker()
+    pizza = Pizza(
+        name=fake.city(),
+        description=fake.address(),
+        price=fake.random_digit(),
+        image=fake.text()
+    )
+    ingredient = Ingredient(
+        type=fake.name(),
+        price=fake.random_digit()
+    )
+    user = User(
+        name=fake.city(),
+        last_name=fake.city(),
+        login=fake.city(),
+        password=fake.random_digit(),
+        role=fake.pybool()
+    )
+    return pizza, ingredient, user
 
 
 class TestUserViews(unittest.TestCase):
-
     def setUp(self):
-        self.app = app.test_client()
+        with app.app_context():
+            app.config['TESTING'] = True
+            app.config['CSRF_ENABLED'] = False
+            app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///resources/test.db'
+            self.app = app.test_client()
+            database.create_all()
+            database.init_app(app)
+            for _ in range(1):
+                result = populate_test_db()
+                for item in result:
+                    database.session.add(item)
+            database.session.commit()
+
+    def tearDown(self):
+        with app.app_context():
+            database.session.remove()
+            database.drop_all()
 
     def test_index(self):
         response = self.app.get('/index')
@@ -25,17 +64,14 @@ class TestUserViews(unittest.TestCase):
         response = self.app.get('/logout')
         self.assertEqual(response.status_code, 302)
 
-    @unittest.skip
     def test_all_orders(self):
         response = self.app.get('/all_orders')
         self.assertEqual(response.status_code, 200)
 
-    @unittest.skip
     def test_pizza_list(self):
         response = self.app.get('/pizza_list')
         self.assertEqual(response.status_code, 200)
 
-    @unittest.skip
     def test_pizza_detail(self):
         response = self.app.get('/pizza_detail/1')
         self.assertEqual(response.status_code, 200)

@@ -13,4 +13,4 @@ MAIL_USE_TLS = True
 MAIL_USERNAME = 'flask.logging@gmail.com'
 MAIL_DEFAULT_SENDER = 'flask.logging@gmail.com'
 MAIL_PASSWORD = 'Qaz123456!'
-RECEPIENTS = ['palloncino.vin@gmail.com']
+RECIPIENTS = ['palloncino.vin@gmail.com']

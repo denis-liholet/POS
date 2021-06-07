@@ -1,11 +1,12 @@
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import logout_user, login_user
 from sqlalchemy import desc
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash
 
-from models.model import database, Pizza, Ingredient, Order, User
 from app import app
+from models.model import database, Pizza, Ingredient, Order, User
 from service.admin_utils import get_all_items
+from service.user_utils import sign_up_user
 
 
 # -------------------------------- USER PART -----------------------------------------
@@ -13,6 +14,7 @@ from service.admin_utils import get_all_items
 
 @app.after_request
 def redirect_to_signin(response):
+    # this endpoint redirects an user to login page if not logged in
     if response.status_code == 401:
         return redirect(url_for('login'))
     return response
@@ -21,59 +23,31 @@ def redirect_to_signin(response):
 @app.route('/')
 @app.route('/index')
 def index():
+    # start page
     return render_template('index.html')
 
 
 @app.route('/sign_up', methods=('GET', 'POST'))
 def sign_up():
-    """
-    This endpoint registers a new user using the data from request. If there is no data in login, password
-    or password2 fields user has to fill required fields up again. If password and password2 do not
-    match the user has to retype the passwords. If an entered login already exists the user has to choose another one.
-    If all request values are correct - a new user will be added to database.
-    The password will be encrypted by SHA256 algorithm
-    """
-    act_login = request.form.get('login')
-    act_password = request.form.get('password')
-    act_password2 = request.form.get('password2')
-    name = request.form.get('name')
-    last_name = request.form.get('last_name')
-    role = True if request.form.get('role') == 'true' else False
-
+    # this endpoint registers a new user using the data from request.
     if request.method == 'POST':
-        if_login_exist = User.query.filter_by(login=act_login).first()
-        if not act_login or not act_password or not act_password2:
-            flash('Please fill all fields up!')
-        elif if_login_exist:
-            flash('This login already exists! Try another one')
-        elif act_password != act_password2:
-            flash('Passwords are not equal!')
-        else:
-            hash_pwd = generate_password_hash(act_password)
-            new_user = User(
-                login=act_login,
-                password=hash_pwd,
-                name=name,
-                last_name=last_name,
-                role=role
-            )
-            database.session.add(new_user)
-            database.session.commit()
-            return redirect(url_for('login'))
+        sign_up_user(request)
+        return redirect(url_for('login'))
     return render_template('sign_up.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    act_login = request.form.get('login')
-    act_password = request.form.get('password')
+    # this endpoint authorizes an user in system
+    user_login = request.form.get('login')
+    user_password = request.form.get('password')
 
-    if act_login and act_password:
-        user = User.query.filter_by(login=act_login).first()
+    if user_login and user_password:
+        user = User.query.filter_by(login=user_login).first()
 
-        if user and check_password_hash(user.password, act_password):
+        if user and check_password_hash(user.password, user_password):
             login_user(user)
-            user_role = User.query.filter_by(login=act_login).first().role
+            user_role = User.query.filter_by(login=user_login).first().role
             if user_role:
                 return redirect(url_for('admin'))
             return redirect(url_for('all_orders_staff'))
@@ -85,25 +59,37 @@ def login():
 
 @app.route('/logout')
 def logout():
+    # redirecting an user to the start page after logging out
     logout_user()
     return redirect(url_for('index'))
 
 
 @app.route('/all_orders')
 def all_orders():
+    # shows the list of all current orders
     orders = get_all_items(Order)
     return render_template('all_orders_user.html', orders=orders)
 
 
 @app.route('/pizza_list', methods=('GET', 'POST'))
 def pizza_list():
+    goods = ''
+    # shows the list of all pizzas
     if request.method == 'GET':
         goods = get_all_items(Pizza)
+
+    # shows the pizzas list in chosen order
     if request.method == 'POST':
+
+        # sorting by price
         if request.form.get('name') == 'price':
             goods = Pizza.query.order_by(Pizza.price)
+
+        # sorting by name
         if request.form.get('name') == 'name':
             goods = Pizza.query.order_by(Pizza.name)
+
+        # sorting by rate
         if request.form.get('name') == 'rate':
             goods = Pizza.query.order_by(desc(Pizza.rate))
 
@@ -112,6 +98,7 @@ def pizza_list():
 
 @app.route('/pizza_detail/<int:pizza_id>')
 def pizza_detail(pizza_id):
+    # shows pizza details like name, price, ingredients etc.
     pizza = Pizza.query.filter_by(id=pizza_id).first_or_404()
     ingredient = get_all_items(Ingredient)
     return render_template('pizza_detail.html', pizza=pizza, ingredient=ingredient)
@@ -119,8 +106,11 @@ def pizza_detail(pizza_id):
 
 @app.route('/add_order/<int:pizza_id>', methods=('GET', 'POST'))
 def add_order(pizza_id):
+    # adds the pizza with chosen ingredients to the order
     pizza = Pizza.query.filter_by(id=pizza_id).first()
     content = request.values
+
+    # ingredients info formation
     ing_list = []
     ing_price = 0
     for item in content:
@@ -129,6 +119,7 @@ def add_order(pizza_id):
         ing_price += ingredient.price
     ingredient = ', '.join(ing_list)
 
+    # creating a new order
     if request.method == 'POST':
         order = Order(
             order_pizza=pizza_id,
@@ -143,6 +134,7 @@ def add_order(pizza_id):
 
 @app.route('/add_rate/<int:pizza_id>', methods=('GET', 'POST'))
 def add_rate(pizza_id):
+    # setting "like" or "dislike" for the pizza rate
     pizza = Pizza.query.filter_by(id=pizza_id).first()
     if request.method == 'POST':
         if request.form.get('like') == '1':

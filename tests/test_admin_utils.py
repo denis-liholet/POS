@@ -38,8 +38,8 @@ class TestAdminUtils(unittest.TestCase):
             app.config['CSRF_ENABLED'] = False
             app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///resources/test.db'
             self.app = app.test_client()
-            database.init_app(app)
             database.create_all()
+            database.init_app(app)
             for _ in range(5):
                 result = populate_test_db()
                 for item in result:
