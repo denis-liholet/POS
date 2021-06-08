@@ -1,12 +1,12 @@
 from flask import render_template, request, redirect, url_for, flash
-from flask_login import logout_user, login_user
+from flask_login import logout_user, login_user, current_user
 from sqlalchemy import desc
 from werkzeug.security import check_password_hash
 
 from app import app
 from models.model import database, Pizza, Ingredient, Order, User
 from service.admin_utils import get_all_items
-from service.user_utils import sign_up_user
+from service.user_utils import sign_up_user, pizza_rate
 
 
 # -------------------------------- USER PART -----------------------------------------
@@ -137,11 +137,6 @@ def add_rate(pizza_id):
     # setting "like" or "dislike" for the pizza rate
     pizza = Pizza.query.filter_by(id=pizza_id).first()
     if request.method == 'POST':
-        if request.form.get('like') == '1':
-            pizza.rate += 1
-        if request.form.get('dislike') == '2':
-            pizza.rate -= 1
-
-        database.session.commit()
+        pizza_rate(request, pizza)
 
     return redirect(url_for('pizza_detail', pizza_id=pizza_id))

@@ -4,7 +4,7 @@ from faker import Faker
 
 from app import app, database
 from models.model import Pizza, Ingredient, User
-from views import admin, user, staff
+
 
 def populate_test_db():
     fake = Faker()
@@ -84,24 +84,28 @@ class TestAdminViews(unittest.TestCase):
         self.ctx = app.test_request_context()
 
     def test_admin(self):
-        response = self.app.get('/admin')
-        assert response.status_code == 302
+        response = self.app.get('/admin', follow_redirects=True)
+        assert response.status_code == 200
 
     def test_all_orders_admin(self):
-        response = self.app.get('/all_orders_admin')
-        self.assertEqual(response.status_code, 302)
+        response = self.app.get('/all_orders_admin', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
 
     def test_db_edit(self):
-        response = self.app.get('/db_edit')
-        self.assertEqual(response.status_code, 302)
+        response = self.app.post('/db_edit', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
 
     def test_ingredient_list(self):
-        response = self.app.get('/ingredient_list')
-        self.assertEqual(response.status_code, 302)
+        response = self.app.get('/ingredient_list', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
 
     def test_user_list(self):
-        response = self.app.get('/user_list')
-        self.assertEqual(response.status_code, 302)
+        response = self.app.get('/user_list', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_database_manage(self):
+        response = self.app.post('/database_manage', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
 
 
 class TestStaffViews(unittest.TestCase):

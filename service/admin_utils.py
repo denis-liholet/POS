@@ -1,7 +1,9 @@
+import shutil
+
 from flask import flash, redirect, url_for
 
-from models.model import Pizza, User
 from app import database
+from models.model import Pizza, User
 
 
 def if_empty(new_value, old_value):
@@ -114,3 +116,19 @@ def delete_user(request) -> None:
     database.session.commit()
 
     flash(f'User "{user.name} {user.last_name}" has been deleted.')
+
+
+def database_copy() -> None:
+    """
+    Copying an existing database to another file
+    :return: None
+    """
+    shutil.copy('resources/pos.db', 'resources/db_copy.db')
+
+
+def database_restore() -> None:
+    """
+    Restoring the database from backup copy
+    :return: None
+    """
+    shutil.copy('resources/db_copy.db', 'resources/pos.db')

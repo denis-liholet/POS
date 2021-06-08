@@ -6,7 +6,7 @@ from flask import request
 from models.model import Ingredient, Pizza, User
 from app import app, database
 from service.admin_utils import if_empty, get_all_items, add_new_pizza, update_pizza, del_pizza, delete_user
-from views.user import add_rate
+from service.user_utils import pizza_rate, sign_up_user
 
 
 def populate_test_db():
@@ -26,7 +26,7 @@ def populate_test_db():
         last_name=fake.city(),
         login=fake.city(),
         password=fake.random_digit(),
-        role=fake.pybool()
+        role=fake.pybool(),
     )
     return pizza, ingredient, user
 
@@ -75,6 +75,7 @@ class TestAdminUtils(unittest.TestCase):
                 self.assertEqual(item.description, 'test_description')
                 self.assertEqual(item.image, 'test_path')
                 self.assertEqual(item.price, 0)
+                self.assertEqual(item.rate, 0)
 
     def test_update_pizza(self):
         with app.app_context():
@@ -103,14 +104,42 @@ class TestAdminUtils(unittest.TestCase):
                 delete_user(request)
                 self.assertEqual(User.query.count(), 4)
 
-    # def test_add_rate(self):
-    #     with app.app_context():
-    #         with app.test_request_context(data={'id': 1, 'like': 1}):
-    #             item = Pizza.query.filter_by(id=1).first()
-    #             add_rate(request)
-    #
-    #             self.assertEqual(item.rate, 1)
+    def test_pizza_rate(self):
+        with app.app_context():
+            item = Pizza.query.filter_by(id=1).first()
+            with app.test_request_context(data={'like': 'set'}):
+                pizza_rate(request, item)
+                self.assertEqual(item.rate, 1)
+                pizza_rate(request, item)
+                pizza_rate(request, item)
+                self.assertEqual(item.rate, 3)
+            with app.test_request_context(data={'dislike': 'set'}):
+                pizza_rate(request, item)
+                self.assertEqual(item.rate, 2)
 
+    def test_sign_up_user(self):
+        with app.app_context():
+            with app.test_request_context(data={
+                'login': 'test',
+                'password': '0000',
+                'password2': '0000',
+                'name': 'Name',
+                'last_name': 'Last',
+                'role': 'True'
+            }):
+                sign_up_user(request)
+                self.assertEqual(User.query.count(), 6)
+                user = User.query.filter_by(name='Name').first().name
+                self.assertEqual(user, 'Name')
+            with app.test_request_context(data={
+                'login': 'test',
+                'password': '0000',
+                'password2': '1111',
+                'name': 'Name',
+                'last_name': 'Last',
+                'role': 'True'
+            }):
+                self.assertEqual(User.query.count(), 6)
 
 
 if __name__ == '__main__':

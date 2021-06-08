@@ -13,9 +13,9 @@
     <img src="{{ pizza.image }}" alt="something went wrong :(">
 
     <form action="{{ url_for('add_rate', pizza_id=pizza.id) }}" method="post">
-    <button type="submit" formmethod="post" name="like" value="1">
+    <button type="submit" formmethod="post" name="like" value="set">
         <img src="\static\like.jpg" alt="something went wrong :(" style="vertical-align: middle" ></button>
-    <button type="submit" formmethod="post" name="dislike" value="2">
+    <button type="submit" formmethod="post" name="dislike" value="set">
         <img src="\static\dislike.jpg" alt="something went wrong :(" style="vertical-align: middle"></button>
     <p></p>
     </form>

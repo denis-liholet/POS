@@ -1,0 +1,33 @@
+{% extends 'base_admin.html' %}
+
+{% block content_title %}
+    DB Manage
+{% endblock %}
+
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <li><span style="color: red; "><strong>{{ message }}</strong></span></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <p><h5><strong>Do you want to back up the database?</strong></h5>
+    <form action="{{ url_for('database_manage') }}" method="post">
+        <button type="submit" formmethod="post" name="name" value="copy">Save</button>
+    </form>
+
+    <p><h5><strong>Do you want restore database?</strong></h5>
+    <p><h6>The last version is: {{ file_info }}</h6>
+    <form action="{{ url_for('database_manage') }}" method="post">
+        <button type="submit" formmethod="post" name="name" value="restore">Restore</button>
+    </form>
+
+{% endblock %}
+
+{% block additional_content %}
+
+{% endblock %}

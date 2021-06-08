@@ -48,3 +48,18 @@ def sign_up_user(request) -> None:
         database.session.add(new_user)
         database.session.commit()
         flash(f'User {name} {last_name} has been created')
+
+
+def pizza_rate(request, pizza) -> None:
+    """
+    Increases or decreases the pizza rate value parsing the request form
+    :param request: request by POST method
+    :param pizza: an item from Pizza ORM model
+    :return: None
+    """
+    if request.form.get('like'):
+        pizza.rate += 1
+    if request.form.get('dislike'):
+        pizza.rate -= 1
+
+    database.session.commit()

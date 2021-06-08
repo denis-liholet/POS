@@ -1,9 +1,13 @@
-from flask import render_template, request, redirect, url_for
+import datetime
+import os.path
+
+from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required
 
 from models.model import Ingredient, Order, Pizza, User
 from app import app
-from service.admin_utils import get_all_items, add_new_pizza, update_pizza, del_pizza, delete_user
+from service.admin_utils import get_all_items, add_new_pizza, update_pizza, \
+    del_pizza, delete_user, database_copy, database_restore
 
 
 # -------------------------------- ADMIN PART -----------------------------------------
@@ -82,3 +86,27 @@ def del_user():
     if request.method == 'POST':
         delete_user(request)
     return redirect(url_for('user_list'))
+
+
+@app.route('/database_manage', methods=['GET', 'POST'])
+@login_required
+def database_manage():
+    file_info = ''
+    # collecting the file information
+    try:
+        file = os.path.getmtime('resources/db_copy.db')
+        file_info = datetime.datetime.fromtimestamp(file).strftime('%d-%m-%Y %H:%M:%S')
+    except FileNotFoundError:
+        flash('You don`t have a backup yet. Make copy first')
+
+    # parsing the request values
+    if request.method == 'POST':
+        option = request.form.get('name')
+        if option == 'copy':
+            database_copy()
+            flash(f'Database copy has been successfully made')
+        if option == 'restore':
+            database_restore()
+            flash(f'Database has been restored')
+
+    return render_template('database_manage.html', file_info=file_info)
