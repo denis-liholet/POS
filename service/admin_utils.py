@@ -3,7 +3,7 @@ import shutil
 from flask import flash, redirect, url_for
 
 from app import database
-from models.model import Pizza, User
+from orm.model import Pizza, User
 
 
 def if_empty(new_value, old_value):

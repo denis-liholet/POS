@@ -8,7 +8,7 @@ you can visit https://pet-pos.herokuapp.com/ to evaluate the application
 
 This is an app for ordering pizza, you can use one of three roles: "User", "Administrator", "Chef"
 
-If you are an User, you can:
+If you are a User, you can:
 - pick a pizza and additions to it
 - to see order number and total cost
 - follow up on your order ("Ready"/"Baking")

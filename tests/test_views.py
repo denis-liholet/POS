@@ -3,7 +3,7 @@ import unittest
 from faker import Faker
 
 from app import app, database
-from models.model import Pizza, Ingredient, User
+from orm.model import Pizza, Ingredient, User
 
 
 def populate_test_db():

@@ -29,7 +29,7 @@ def internal_server_error(error):
 
 
 @app.errorhandler(404)
-def internal_server_error(error):
+def page_not_found_error(error):
     # custom page "404"
     message = '<img src="/static/404.png" alt="something went wrong :(">'
     return message, 404

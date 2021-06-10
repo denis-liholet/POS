@@ -1,6 +1,6 @@
 import unittest
 
-from models.model import User, Order
+from orm.model import User, Order
 from app import app, database
 from service.staff_utils import order_done
 

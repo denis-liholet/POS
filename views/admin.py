@@ -4,7 +4,7 @@ import os.path
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required
 
-from models.model import Ingredient, Order, Pizza, User
+from orm.model import Ingredient, Order, Pizza, User
 from app import app
 from service.admin_utils import get_all_items, add_new_pizza, update_pizza, \
     del_pizza, delete_user, database_copy, database_restore

@@ -1,7 +1,7 @@
 from flask import flash
 from werkzeug.security import generate_password_hash
 
-from models.model import User
+from orm.model import User
 from app import database
 
 

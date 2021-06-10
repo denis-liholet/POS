@@ -4,7 +4,7 @@ from sqlalchemy import desc
 from werkzeug.security import check_password_hash
 
 from app import app
-from models.model import database, Pizza, Ingredient, Order, User
+from orm.model import database, Pizza, Ingredient, Order, User
 from service.admin_utils import get_all_items
 from service.user_utils import sign_up_user, pizza_rate
 

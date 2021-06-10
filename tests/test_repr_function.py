@@ -1,6 +1,6 @@
 import unittest
 
-from models.model import Order, Ingredient, Pizza, User
+from orm.model import Order, Ingredient, Pizza, User
 from app import app, database
 
 
