@@ -7,7 +7,7 @@ app.config.from_object('config')
 database.init_app(app)
 manager.init_app(app)
 
-from views import *
+from views import admin, error, staff, user
 
 if __name__ == '__main__':
     app.run()
